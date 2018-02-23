@@ -1,4 +1,4 @@
-<=php
+<?php
 
 function inc_get_register_attendee_shortcode($args) {
 

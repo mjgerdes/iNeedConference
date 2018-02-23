@@ -1,7 +1,10 @@
 
 <?php
-// check google absl and tip of the week
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+define('WP_DEBUG', true);
+
+
+
 /**
  * @package iNeedConference
  * @version 0.1
