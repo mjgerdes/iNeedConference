@@ -15,6 +15,7 @@ Version: 0.1
 Author URI: http://github.com/mjgerdes
 */
 
+include('inc-shortcodes.php');
 
 
 ?>
