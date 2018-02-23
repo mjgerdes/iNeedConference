@@ -1,5 +1,6 @@
 
 <?php
+// check google absl and tip of the week
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 /**
  * @package iNeedConference
