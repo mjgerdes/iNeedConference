@@ -13,22 +13,11 @@ $message = "<b>Please, don't be a stranger. Tell us your name!</b>";
 }else if(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
  // case if no valid email provided
 $message = "<b>Please provide a valid email adress!</b>";
-} else {
+} else if (inc_attendee_email_exists($_POST['email'])) {
+$message = "Sorry, it seems someone with this email has already registered.";
+}else {
 // all good, insert into db
-global $wpdb;
-$table_name = inc_attendee_table_name();
-
-    $wpdb->insert( 
-        $table_name, 
-        array(
-		"time" => current_time('mysql'),
-		"auth" => inc_generate_auth(),
-            'name' => $attendee_name,
-			"email" => $_POST['email'],
-			"status" => inc_attendee_status_code(-1),
-			"note" => strip_tags($_POST['note'], "")
-        )
-    );
+inc_attendee_insert_from_valid($attendee_name, $_POST['email'], strip_tags($_POST['note'], ""));
 $success = true;
 }
 }

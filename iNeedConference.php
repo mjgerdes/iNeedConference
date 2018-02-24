@@ -33,14 +33,6 @@ return $wpdb->prefix . '_attendee';
 This function is run upon plugin activation.
 */
 
-function inc_attendee_status_code($n) {
-$phplol =  array( -1 => "await_email_validation",
- 0 => "await_payment",
- 1 => "attendee",
- 666 => "needs_attention");
-return $phplol[$n];
-}
-
 function inc_install() {
 global $wpdb;
 	global $inc_db_version;
@@ -71,16 +63,7 @@ dbDelta( $sql );
 // we only want to check for tables at plugin activation
 register_activation_hook(__FILE__, 'inc_install');
 
-
-/* this is what we put in the auth field in the attendee table.
-It's not really necessary, which is hilarious, and we never check it, but it has to be there or the auth string we give to users won't look like an auth string!
-Also, I suppose it serves the function of preventing people from figuring out the registration status of other users. */
-function inc_generate_auth() {
-$length = 5;
-    return substr(str_shuffle(str_repeat($x='ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-}
-
-
+include('inc-attendee.php');
 include('inc-shortcodes.php');
 
 
