@@ -3,7 +3,7 @@
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 define('WP_DEBUG', true);
-
+define('INC_DIR', dirname( __FILE__ )); //an absolute path to this directory
 
 
 /**
