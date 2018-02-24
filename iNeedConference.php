@@ -21,12 +21,15 @@ define('INC_DIR', dirname( __FILE__ )); //an absolute path to this directory
 global $inc_db_version;
 $inc_db_version = '1.0';
 /* Functions to get table names. Note that we have a prefix like
-wp__table_name, i.e. two underscores to visually distinguish our
-tables from wp native tables.
-*/
-function inc_attendee_table_name() {
+wp_inc_<tablename>
+to distinguish our tables from wp native tables. */
+function inc_general_table_prefix() {
 global $wpdb;
-return $wpdb->prefix . '_attendee';
+return $wpdb->prefix . "inc_";
+}
+
+function inc_attendee_table_name() {
+return inc_general_table_prefix() . 'attendee';
 }
 
 /* Creates database tables if none already exist.
