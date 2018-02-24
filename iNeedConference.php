@@ -1,5 +1,6 @@
 
 <?php
+
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 define('WP_DEBUG', true);
 
