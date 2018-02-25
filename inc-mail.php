@@ -15,8 +15,8 @@ return mail($to, $subject, $msg, $additional_headers);
 
 function inc_send_attendee_validation_mail($attendee) {
 $authcode = inc_attendee_authcode_string($attendee);
-$ body = "Dear $attendee->name,\n"
-. thank you for registering to attend to the 28th TaCoS, which will be held on June 8th to June 10th at the University of Potsdam.\n"
+$body = "Dear $attendee->name,\n"
+. "thank you for registering to attend to the 28th TaCoS, which will be held on June 8th to June 10th at the University of Potsdam.\n"
 . "To confirm your registration attempt, please visit the link below.\n"
 . "\n"
 . get_site_url() . "/register-to-attend?authcode=" . $authcode

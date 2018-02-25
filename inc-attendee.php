@@ -21,6 +21,9 @@ $length = 5;
 
 /* Query the DB to see if an email already exists. */
 function inc_attendee_email_exists($email) {
+// FIXME: temporarily disabled for testing
+return false;
+
 global $wpdb;
 $table_name = inc_attendee_table_name();
 $wpdb->get_results($wpdb->prepare(
@@ -59,7 +62,7 @@ $table_name = inc_attendee_table_name();
 
 return $wpdb->get_results($wpdb->prepare("
 SELECT * FROM $table_name
- WHERE id = %d"
+ WHERE id = %d",
 $id));
 }
 
