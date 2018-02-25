@@ -2,12 +2,14 @@
 <?php
 /* inc-attendee.php
  Functions and types to deal with attendees. */
-
+define("INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION", -1);
+define("INC_ATTENDEE_STATUS_AWAIT_PAYMENT", 0);
+define("INC_ATTENDEE_STATUS_ATTENDEE", 1);
 function inc_attendee_status_code($n) {
 $phplol =  array( -1 => "await_email_validation",
  0 => "await_payment",
- 1 => "attendee",
- 666 => "needs_attention");
+ 1 => "attendee");
+
 return $phplol[$n]; // can't do this all in one statement - thanks php!
 }
 
@@ -62,6 +64,12 @@ return NULL;
 return $wpdb->insert_id;
 }
 
+/* Updates an attendee's record. Expects an attendee object. */
+function inc_attendee_update($attendee) {
+global $wpdb;
+
+
+}
 /* Retreives an attendee from DB by id */
 function inc_attendee_from_id($id) {
 global $wpdb;

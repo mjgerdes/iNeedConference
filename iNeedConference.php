@@ -15,6 +15,7 @@ Author URI: http://github.com/mjgerdes
 
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+// FIXME: want to turn debug off after we're done
 define('WP_DEBUG', true);
 define('INC_DIR', dirname( __FILE__ )); //an absolute path to this directory
 
@@ -52,6 +53,7 @@ $sql = "CREATE TABLE $table_name (
   email varchar(255) DEFAULT '' NOT NULL,
   status tinytext NOT NULL DEFAULT '',
   note text NOT NULL DEFAULT '',
+  needs_attention BOOL NOT NULL DEFAULT 0,
   PRIMARY KEY  (id)
 ) $charset_collate;";
 
