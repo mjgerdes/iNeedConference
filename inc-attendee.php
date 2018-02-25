@@ -39,7 +39,7 @@ function inc_attendee_insert_from_valid($validName, $validEmail, $validNote) {
 global $wpdb;
 $table_name = inc_attendee_table_name();
 
-    $wpdb->insert( 
+    return $wpdb->insert( 
         $table_name, 
         array(
 		"time" => current_time('mysql'),
@@ -89,4 +89,3 @@ SELECT * FROM $table_name
 
 
 
-?>
