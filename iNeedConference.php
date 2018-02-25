@@ -67,6 +67,7 @@ dbDelta( $sql );
 register_activation_hook(__FILE__, 'inc_install');
 
 include('inc-attendee.php');
+include('inc-mail.php');
 include('inc-shortcodes.php');
 
 
