@@ -5,12 +5,21 @@
 define("INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION", -1);
 define("INC_ATTENDEE_STATUS_AWAIT_PAYMENT", 0);
 define("INC_ATTENDEE_STATUS_ATTENDEE", 1);
-function inc_attendee_status_code($n) {
-$phplol =  array( -1 => "await_email_validation",
- 0 => "await_payment",
- 1 => "attendee");
 
-return $phplol[$n]; // can't do this all in one statement - thanks php!
+function inc_internal_attendee_statustable() {
+return array(
+INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION => array("await_email_validation", "Registration is waiting to be email validated by the user."),
+ INC_ATTENDEE_STATUS_AWAIT_PAYMENT => array("await_payment", "Registration is waiting for payment."),
+ INC_ATTENDEE_STATUS_ATTENDEE => array("attendee", "All good! Payment has been received and your registration is complete. We are looking forward to meeting you at TaCoS 28!"));
+}
+
+
+function inc_attendee_status_code($n) {
+  return inc_internal_attendee_statustable()[$n][0];
+}
+
+function inc_attendee_status_code_pretty($n) {
+  return inc_internal_attendee_statustable()[$n][1];
 }
 
 /* this is what we put in the auth field in the attendee table.
