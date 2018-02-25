@@ -61,7 +61,8 @@ $table_name = inc_attendee_table_name();
 		"auth" => inc_attendee_generate_auth(),
             'name' => $validName,
 			"email" => $validEmail,
-			"status" => inc_attendee_status_code(-1),
+			"status" => inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION),
+			"needs_attention" => 0,
 			"note" => $validNote
         )
     );
