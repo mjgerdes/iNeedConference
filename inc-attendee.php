@@ -52,6 +52,20 @@ $table_name = inc_attendee_table_name();
     );
 }
 
+/* Retreives an attendee from DB by id */
+function inc_attendee_from_id($id) {
+global $wpdb;
+$table_name = inc_attendee_table_name();
+
+return $wpdb->get_results($wpdb->prepare("
+SELECT * FROM $table_name
+ WHERE id = %d"
+$id));
+}
+
+
+
+
 /*
  *  Authcode stuff
  *Note that the following laws hold
@@ -86,6 +100,8 @@ SELECT * FROM $table_name
  $authcode->id,
  $authcode->auth));
 }
+
+
 
 
 
