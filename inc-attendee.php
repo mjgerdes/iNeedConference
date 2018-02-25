@@ -52,6 +52,40 @@ $table_name = inc_attendee_table_name();
     );
 }
 
+/*
+ *  Authcode stuff
+ *Note that the following laws hold
+ * Let $attendee be a valid attendee
+ *  $attendee == inc_attendee_from_authcode(inc_attendee_authcode_from_string(inc_attendee_authcode_string($attendee))) 
+ */
+
+/* Given an authcode string, return an object with auth and id of attendee. */
+function inc_attendee_authcode_from_string($authcode_string) {
+$arr = explode("-", $authcode_string);
+if(count($arr != 2)){
+return false;
+}
+
+return (object) array("id" => $arr[0], "auth" => $arr[1]);
+}
+
+/* Given an attendee object, return its authcode string (the thing we want to give to users) */
+function inc_attendee_authcode_string($attendee) {
+return $attendee->id . "-" . $attendee->auth;
+}
+
+/* Given a user supplied authcode object, return the matching attendee or null if none exists. */
+function inc_attendee_from_authcode($authcode) {
+global $wpdb;
+$table_name = inc_attendee_table_name();
+
+return $wpdb->get_results($wpdb->prepare("
+SELECT * FROM $table_name
+ WHERE id = %d
+ AND auth = %s",
+ $authcode->id,
+ $authcode->auth));
+}
 
 
 
