@@ -37,12 +37,13 @@ return $wpdb->num_rows > 0;
 
 
 /* Inserts a new attendee into the database.
- Validation has to be done at call-site! */
+ Validation has to be done at call-site!
+ Returns the id of just inserted attendee or null if unsuccessful */
 function inc_attendee_insert_from_valid($validName, $validEmail, $validNote) {
 global $wpdb;
 $table_name = inc_attendee_table_name();
 
-    return $wpdb->insert( 
+ $res = $wpdb->insert( 
         $table_name, 
         array(
 		"time" => current_time('mysql'),
@@ -53,6 +54,12 @@ $table_name = inc_attendee_table_name();
 			"note" => $validNote
         )
     );
+
+if(!$res) {
+return NULL;
+}
+
+return $wpdb->insert_id;
 }
 
 /* Retreives an attendee from DB by id */
@@ -60,10 +67,16 @@ function inc_attendee_from_id($id) {
 global $wpdb;
 $table_name = inc_attendee_table_name();
 
-return $wpdb->get_results($wpdb->prepare("
+$phplol = $wpdb->get_results($wpdb->prepare("
 SELECT * FROM $table_name
  WHERE id = %d",
 $id));
+
+if($phplol) {
+return $phplol[0];
+}
+
+return NULL;
 }
 
 

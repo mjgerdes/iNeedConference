@@ -4,13 +4,17 @@
 
 /* Should get the base domain name for sending mails with noreplay…@domain.tld */
 function inc_site_domain() {
-return parse_url($_SERVER['SERVER_NAME'], PHP_URL_HOST);
+//return parse_url($_SERVER['SERVER_NAME'], PHP_URL_HOST);
+//FIXME: Generalize domain
+return "tacos28.de";
+
+
 }
 
 function inc_send_mail($to, $subject, $body) {
 $domain = inc_site_domain();
-$additional_headers = "from: noreply@$domain\nReply-to: noreply@$domain";
-return mail($to, $subject, $msg, $additional_headers);
+$additional_headers = "From: noreply@$domain" . "\r\n" . "Reply-To: noreply@$domain" . "\r\n";
+return mail($to, $subject, $body, $additional_headers);
 }
 
 function inc_send_attendee_validation_mail($attendee) {

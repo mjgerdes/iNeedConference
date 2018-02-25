@@ -14,10 +14,19 @@ $message = "<b>Please, don't be a stranger. Tell us your name!</b>";
  // case if no valid email provided
 $message = "<b>Please provide a valid email adress!</b>";
 } else if (inc_attendee_email_exists($_POST['email'])) {
+// case if email already in system
 $message = "Sorry, it seems someone with this email has already registered.";
 }else {
 // all good, insert into db
-inc_attendee_insert_from_valid($attendee_name, $_POST['email'], strip_tags($_POST['note'], ""));
+$id = inc_attendee_insert_from_valid($attendee_name, $_POST['email'], strip_tags($_POST['note'], ""));
+
+if($id) {
+// insert success, send email
+$attendee = inc_attendee_from_id($id);
+if($attendee) {
+inc_send_attendee_validation_mail($attendee);
+}
+}
 $success = true;
 }
 }
