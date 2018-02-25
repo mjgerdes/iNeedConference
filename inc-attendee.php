@@ -15,11 +15,15 @@ INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION => array("await_email_validation", "R
 
 
 function inc_attendee_status_code($n) {
-  return inc_internal_attendee_statustable()[$n][0];
+$phplol =  inc_internal_attendee_statustable();
+$phplol = $phplol[$n];
+return $phplol[0];
 }
 
 function inc_attendee_status_code_pretty($n) {
-  return inc_internal_attendee_statustable()[$n][1];
+ $phplol =  inc_internal_attendee_statustable();
+ $phplol = $phplol[$n];
+ return $phplol[1];
 }
 
 /* this is what we put in the auth field in the attendee table.
