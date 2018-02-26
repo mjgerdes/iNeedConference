@@ -40,7 +40,8 @@ inc_send_attendee_validation_mail($attendee);
 }
 }
 $success = true;
- $message = "Thank you $attendee_name, we are looking forward to meeting you! Please check your email and follow the instructions provided in the validation mail that our robots have just sent to you. Remember, if you have any further questions about your registration, feel free to reach out to us at help@tacos28.de";
+// FIXME: replace email adress with a picture
+$message = "Thank you $attendee_name, we are looking forward to meeting you! Please check your email and follow the instructions provided in the validation mail that our robots have just sent to you. Remember, if you have any further questions about your registration, feel free to reach out to us at help@tacos28.de";
 } // end of data validation
 } // end of having post data
 
