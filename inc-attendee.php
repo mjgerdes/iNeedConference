@@ -9,7 +9,7 @@ define("INC_ATTENDEE_STATUS_ATTENDEE", 1);
 function inc_internal_attendee_statustable() {
 return array(
 INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION => array("await_email_validation", "Registration is waiting to be email validated by the user."),
- INC_ATTENDEE_STATUS_AWAIT_PAYMENT => array("await_payment", "Registration is waiting for payment."),
+ INC_ATTENDEE_STATUS_AWAIT_PAYMENT => array("await_payment", "Validated but waiting for payment."),
  INC_ATTENDEE_STATUS_ATTENDEE => array("attendee", "All good! Payment has been received and your registration is complete. We are looking forward to meeting you at TaCoS 28!"));
 }
 
@@ -79,10 +79,16 @@ return $wpdb->insert_id;
 }
 
 /* Updates an attendee's record. Expects an attendee object. */
-function inc_attendee_update($attendee) {
+function inc_attendee_update_status($attendee) {
 global $wpdb;
 
+$res = $wpdb->update(inc_attendee_table_name(),
+array( "status" => $attendee->status),
+array( "id" => $attendee->id),
+array("%s"));
 
+// as always, no idea what to do if this fails
+return $res;
 }
 /* Retreives an attendee from DB by id */
 function inc_attendee_from_id($id) {
@@ -114,7 +120,7 @@ return NULL;
 /* Given an authcode string, return an object with auth and id of attendee. */
 function inc_attendee_authcode_from_string($authcode_string) {
 $arr = explode("-", $authcode_string);
-if(count($arr != 2)){
+if(count($arr) != 2) {
 return false;
 }
 
@@ -131,12 +137,18 @@ function inc_attendee_from_authcode($authcode) {
 global $wpdb;
 $table_name = inc_attendee_table_name();
 
-return $wpdb->get_results($wpdb->prepare("
+$arr = $wpdb->get_results($wpdb->prepare("
 SELECT * FROM $table_name
  WHERE id = %d
  AND auth = %s",
  $authcode->id,
  $authcode->auth));
+
+if(count($arr) != 1) {
+// either there is zero, or something is very wrong with the db (duplicated primary keys)
+return NULL;
+}
+return $arr[0];
 }
 
 
