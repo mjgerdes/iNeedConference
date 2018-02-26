@@ -77,7 +77,7 @@ function inc_admin_menu_setup() {
 add_menu_page('iNeedConference Attendees', // page title
 'IneedConference', // label
 'manage_options', // access restriction
-'ineedconference-attendees', // slug
+inc_admin_attendees_slug(), // slug
 'inc_admin_attendees_init' /* function that is called when menu is
 opened */
 );

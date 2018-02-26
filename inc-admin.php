@@ -1,5 +1,8 @@
 <?php
 
+function inc_admin_attendees_slug() {
+return 'ineedconference-attendees';
+}
 
 function inc_attendee_flagstring($needs_attention) {
 if ($needs_attention) {
@@ -42,7 +45,12 @@ echo "<tr>\n"
 // note
 . "<td>$attendee->note</td>"
 // edit
-. '<td><form method="get" id="edit_attendee' . $attendee->id . '_form"><button type="submit" name="edit_attendee" value="' . $attendee->id . '"><Edit</button>/form>';
+. '<td>'
+. '<form name="edit" method="get" id="f' . $attendee->id . '">'
+. '<input type="hidden" name="page" value="' . inc_admin_attendees_slug() . '" />'
+ . '<button form="f' . $attendee->id . '" type="submit" name="edit_attendee" value="' . $attendee->id . '">Edit</button>'
+ . '</form></td>';
+ echo "</tr>";
 }
 echo "</table>";
 
