@@ -71,6 +71,19 @@ register_activation_hook(__FILE__, 'inc_install');
 include('inc-attendee.php');
 include('inc-mail.php');
 include('inc-shortcodes.php');
+include("inc-admin.php");
 
+function inc_admin_menu_setup() {
+add_menu_page('iNeedConference Attendees', // page title
+'IneedConference', // label
+'manage_options', // access restriction
+'ineedconference-attendees', // slug
+'inc_admin_attendees_init' /* function that is called when menu is
+opened */
+);
+}
+
+// admin panel
+add_action('admin_menu', 'inc_admin_menu_setup');
 
 ?>
