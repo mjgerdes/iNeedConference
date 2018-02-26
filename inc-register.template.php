@@ -71,7 +71,7 @@ echo "<p><b>$message</b></p>";
 <label for="note"><h3>Anything you would like to tell us</h3></label>
 <input type="textarea" name="note" id="note" />
 
-<input type="submit" name="submit_form" value="submit" />
+<input type="submit" name="submit_form" value="Submit" />
 </form>
 
 <?php
