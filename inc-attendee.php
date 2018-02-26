@@ -107,6 +107,16 @@ return $phplol[0];
 return NULL;
 }
 
+/* Get all attendees from DB.
+Thisis meant for the admin panel. */
+function inc_attendees() {
+global $wpdb;
+$table_name = inc_attendee_table_name();
+
+return $wpdb->get_results("
+SELECT * FROM $table_name");
+}
+
 
 
 
