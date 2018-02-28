@@ -12,9 +12,12 @@ return "tacos28.de";
 }
 
 function inc_send_mail($to, $subject, $body) {
+$robot_name = "TaCoS28"
 $domain = inc_site_domain();
-$additional_headers = "From: noreply@$domain" . "\r\n" . "Reply-To: noreply@$domain" . "\r\n";
-return mail($to, $subject, $body, $additional_headers);
+$additional_headers = "";
+//$additional_headers = "Reply-To: noreply@$domain" . "\r\n";
+$commandlineopts = "-f noreply@$domain -F $robot_name";
+return mail($to, $subject, $body, $additional_headers, $commandlineopts);
 }
 
 function inc_send_attendee_validation_mail($attendee) {
