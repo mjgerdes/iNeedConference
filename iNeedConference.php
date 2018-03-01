@@ -1,9 +1,5 @@
 
 <?php
-/**
- * @package iNeedConference
- * @version 0.1
- */
 /*
 Plugin Name: iNeedConference
 Plugin URI: http://wordpress.org/plugins/iNeedConference/
@@ -13,6 +9,12 @@ Version: 0.1
 Author URI: http://github.com/mjgerdes
 */
 
+
+
+/*
+* @package iNeedConference
+ * @version 0.1
+ */
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 // FIXME: want to turn debug off after we're done
