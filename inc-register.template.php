@@ -30,7 +30,13 @@ $message = "<b>Please provide a valid email adress!</b>";
 $message = "Sorry, it seems someone with this email has already registered.";
 }else {
 // all good, insert into db
-$id = inc_attendee_insert_from_valid($attendee_name, $_POST['email'], strip_tags($_POST['note'], ""));
+if($_POST['food'] == "other") {
+$foodchoice = $_POST['other_spec'];
+} else {
+$foodchoice = $_POST['food'];
+}
+
+$id = inc_attendee_insert_from_valid($attendee_name, $_POST['email'], strip_tags($_POST['note'], ""), strip_tags($foodchoice, ""));
 
 if($id) {
 // insert success, send email
@@ -67,10 +73,18 @@ echo "<p><b>$message</b></p>";
 
 <label for="email"><h3>Your E-Mail adress</h3></label>
     <input required type="email" name="email" id="email" />
-
+<fieldset>
+<p>Do you have a nutritional preference?</p>
+<label for="rvegan">Vegan</label> 
+<input type="radio" id="rvegan" name="food" value="vegan" checked="checked" />
+<label for="rvegetarian">Vegetarian</label>
+<input type="radio" id="rvegetarian" name="food" value="vegetarian" />
+<label for="rother">Other</label>
+<input type="radio" id="rother" name="food" value="other" />
+<input type="text" name="other_spec" placeholder="Please specify" />
+</fieldset>
 <label for="note"><h3>Anything you would like to tell us</h3></label>
-<input type="textarea" name="note" id="note" />
-
+<textarea name="note" id="note" rows="4"></textarea>
 <input type="submit" name="submit_form" value="Submit" />
 </form>
 

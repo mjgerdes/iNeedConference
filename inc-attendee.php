@@ -37,7 +37,7 @@ $length = 5;
 /* Query the DB to see if an email already exists. */
 function inc_attendee_email_exists($email) {
 // FIXME: temporarily disabled for testing
-return false;
+//return false; // reenabled
 
 global $wpdb;
 $table_name = inc_attendee_table_name();
@@ -54,7 +54,7 @@ return $wpdb->num_rows > 0;
 /* Inserts a new attendee into the database.
  Validation has to be done at call-site!
  Returns the id of just inserted attendee or null if unsuccessful */
-function inc_attendee_insert_from_valid($validName, $validEmail, $validNote) {
+function inc_attendee_insert_from_valid($validName, $validEmail, $validNote, $validFood) {
 global $wpdb;
 $table_name = inc_attendee_table_name();
 
@@ -67,7 +67,8 @@ $table_name = inc_attendee_table_name();
 			"email" => $validEmail,
 			"status" => inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION),
 			"needs_attention" => 0,
-			"note" => $validNote
+			"note" => $validNote,
+			"food" => $validFood
         )
     );
 

@@ -12,7 +12,7 @@ return "tacos28.de";
 }
 
 function inc_send_mail($to, $subject, $body) {
-$robot_name = "TaCoS28"
+$robot_name = "TaCoS28";
 $domain = inc_site_domain();
 $additional_headers = "";
 //$additional_headers = "Reply-To: noreply@$domain" . "\r\n";

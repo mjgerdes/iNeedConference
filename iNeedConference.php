@@ -53,6 +53,7 @@ $sql = "CREATE TABLE $table_name (
   email varchar(255) DEFAULT '' NOT NULL,
   status tinytext NOT NULL DEFAULT '',
   note text NOT NULL DEFAULT '',
+  food tinytext NOT NULL DEFAULT '',  
   needs_attention BOOL NOT NULL DEFAULT 0,
   PRIMARY KEY  (id)
 ) $charset_collate;";
