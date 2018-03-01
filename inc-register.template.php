@@ -36,7 +36,7 @@ $foodchoice = $_POST['other_spec'];
 $foodchoice = $_POST['food'];
 }
 
-$id = inc_attendee_insert_from_valid($attendee_name, $_POST['email'], strip_tags($_POST['note'], ""), strip_tags($foodchoice, ""));
+$id = inc_attendee_insert_from_valid($attendee_name, $_POST['email'], strip_tags($_POST['note'], ""), strip_tags($foodchoice, ""), strip_tags($_POST['university'], ""));
 
 if($id) {
 // insert success, send email
@@ -47,7 +47,7 @@ inc_send_attendee_validation_mail($attendee);
 }
 $success = true;
 // FIXME: replace email adress with a picture
-$message = "Thank you $attendee_name, we are looking forward to meeting you! Please check your email and follow the instructions provided in the validation mail that our robots have just sent to you. Remember, if you have any further questions about your registration, feel free to reach out to us at help@tacos28.de";
+$message = "Thank you $attendee_name, we are looking forward to meeting you! Please check your email and follow the instructions provided in the validation mail that our robots have just sent to you. Oh, and do <b>check your spam folder</b>. Remember, if you have any further questions about your registration, feel free to reach out to us at help@tacos28.de";
 } // end of data validation
 } // end of having post data
 
@@ -70,11 +70,12 @@ echo "<p><b>$message</b></p>";
 <form action="#validate_form" method="post" id="validate_form">
     <label for="attendee_name"><h3>Your name</h3></label>
     <input required type="text" name="attendee_name" id="attendee_name" />
-
 <label for="email"><h3>Your E-Mail adress</h3></label>
     <input required type="email" name="email" id="email" />
+<label for="university"><h3>Your university</h3></label>
+<input required type="text" id="university" name="university" />
 <fieldset>
-<p>Do you have a nutritional preference?</p>
+<p>Do you have a dietary preference?</p>
 <label for="rvegan">Vegan</label> 
 <input type="radio" id="rvegan" name="food" value="vegan" checked="checked" />
 <label for="rvegetarian">Vegetarian</label>

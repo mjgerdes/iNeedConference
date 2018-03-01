@@ -54,7 +54,7 @@ return $wpdb->num_rows > 0;
 /* Inserts a new attendee into the database.
  Validation has to be done at call-site!
  Returns the id of just inserted attendee or null if unsuccessful */
-function inc_attendee_insert_from_valid($validName, $validEmail, $validNote, $validFood) {
+function inc_attendee_insert_from_valid($validName, $validEmail, $validNote, $validFood, $validUniversity) {
 global $wpdb;
 $table_name = inc_attendee_table_name();
 
@@ -68,7 +68,8 @@ $table_name = inc_attendee_table_name();
 			"status" => inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION),
 			"needs_attention" => 0,
 			"note" => $validNote,
-			"food" => $validFood
+			"food" => $validFood,
+			"university" => $validUniversity
         )
     );
 
