@@ -9,5 +9,7 @@ return ob_get_clean();
 
 add_shortcode('register_attendee', 'inc_get_register_attendee_shortcode');
 
+include('inc-register-talk.php');
+add_shortcode('register_talk', 'inc_get_register_talk_shortcode');
 
 ?>
