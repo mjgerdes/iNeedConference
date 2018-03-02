@@ -61,7 +61,7 @@ $filename = inc_register_talk_maybe_filename($_FILES['userfile']['tmp_name'], $_
 // everything seems to check out, lets insert a new talk into db
 inc_talk_insert_from_valid($attendee->id, $_POST['title'], $_POST['subtitle'], $_POST['type'], $_POST['description'], $filename);
 
-$out['body'] = "<h3>How exciting!</h3><p>Thank you for submitting your " . $_POST['type'] . ", we are going to take it under consideration! Please understand that the review process might take some time. We will inform you of our decision, wether '" . $_POST['subtitle'] . "' is a good fit for TaCoS28 as soon as we are able.</p>";
+$out['body'] = "<h3>How exciting!</h3><p>Thank you, ". $attendee->name .", for submitting your " . $_POST['type'] . ", we are going to take it under consideration! Please understand that the review process might take some time. We will inform you of our decision wether '" . $_POST['subtitle'] . "' is a good fit for TaCoS28 as soon as we are able.</p>";
 return $out;
 }
 
