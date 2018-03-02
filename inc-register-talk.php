@@ -22,8 +22,36 @@ echo "<div>" . $res['body'] . "</div>";
 
 }
 
-function inc_register_talk_maybe_filename($tmpname, $size) {
-return ""; //FIXME: temporarily deisabled
+function inc_internal_seems_pdf($path) {
+$ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+return $ext == "pdf";
+}
+
+function inc_internal_talk_next_talkid() {
+global $wpdb;
+$table_name = inc_talk_table_name();
+$wpdb->get_results(
+"SELECT id from $table_name");
+
+// query was done, we only need to know the rows affected
+return $wpdb->num_rows + 1;
+}
+
+function inc_register_talk_maybe_filename($attendee_id, $tmpname, $size) {
+// this shuold not happen but oh well sanity check
+if($size == 0) {
+return "";
+}
+
+$filename = $attendee_id . "-" . inc_internal_talk_next_talkid() . ".pdf";
+$fullpath = INC_DIR . "/pdf/" . $filename;
+if(move_uploaded_file($tmpname, $fullpath)) {
+// success
+return $filename;
+}
+
+// some error occured, return empty signaling error
+return "";
 }
 
 /* The following functions all return an array of 'msg' and  'body', as per the controller shortcode function above. */
@@ -55,7 +83,28 @@ return $out;
 
 // separately check the file
 if(isset($_FILES['userfile'])) {
-$filename = inc_register_talk_maybe_filename($_FILES['userfile']['tmp_name'], $_FILES['userfile']['size']);
+    if(!($_FILES['userfile']['error'] === UPLOAD_ERR_OK)) {
+       $out['msg'] = "Sorry, file upload failed with error code " . $_FILES['userfile']['error'];
+	   return inc_register_talk_showform($out);
+}
+
+if(!inc_internal_seems_pdf($_FILES['userfile']['name'])) {
+$out['msg'] = "Sorry, but the uploaded file must be a pdf (and have a pdf extension).";
+return inc_register_talk_showform($out);
+}
+
+if($_FILES['userfile']['size'] > 31457280) {
+$out['msg'] = "Sorry, the file you uploaded was too large.";
+return inc_register_talk_showform($out);
+}
+
+// good so far, try to move the file to a permanent location
+$filename = inc_register_talk_maybe_filename($attendee->id, $_FILES['userfile']['tmp_name'], $_FILES['userfile']['size']);
+
+if($filename == "") {
+$out['msg'] = "Sorry, an error occured while trying to process the file you provided. Please try submitting your request again, perhaps changing the filename.";
+return inc_register_talk_showform($out);
+}
 }
 
 // everything seems to check out, lets insert a new talk into db
@@ -96,7 +145,7 @@ $out['body'] = "<form enctype='multipart/form-data' method='POST' id='talk_form'
 
 // pdf
 . "<label for='pdf'><h3>Associated Paper<H3><p>If you have a PDF file that is associated with your talk or workshop, please upload it here.</p></label>"
-. '<input type="hidden" name="MAX_FILE_SIZE" value="30000" />'
+. '<input type="hidden" name="MAX_FILE_SIZE" value="31457280" />'
 . '<input name="userfile" id="pdf" type="file" />'
 
 // submit
