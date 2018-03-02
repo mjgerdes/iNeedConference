@@ -140,7 +140,7 @@ $out['body'] = "<form enctype='multipart/form-data' method='POST' id='talk_form'
 . "</fieldset>"
 
 // longform description
-. "<label for='description'><h3>Description</h3></label>"
+. "<label for='description'><h3>Additional notes and description</h3><p>A longer description of your contribution and anything else you'd like to tell us, for instance, a prefered time and date.</p></label>"
 . "<textarea required id='description' name='description' rows='8'></textarea>"
 
 // pdf
