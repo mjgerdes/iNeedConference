@@ -31,9 +31,12 @@ return ""; //FIXME: temporarily deisabled
 
 /* Validates all input from form and inserts a new talk into db if necessary. If fields are not valid, reprints the form and gives a message. */
 function inc_register_talk_validateform($out) {
+$attendee = NULL; // if auth is valid, this will hold the attendee associated with the talk
 $predicates = array(
-array("auth", "The provided authentication code was invalid. If you are not registered to attend the conference, please do so to get your authentication code. Otherwise, please check your validation email to ensure that you spelled your code correctly.", function ($auth) {
-return true; // FIXME: temporarily disabled for testing
+array("auth", "The provided authentication code was invalid. If you are not registered to attend the conference, please do so to get your authentication code. Otherwise, please check your validation email to ensure that you spelled your code correctly.", function ($auth) use (&$attendee) {
+// note: we captured by reference, so this will modify the $attendee at outer function scope
+$attendee = inc_attendee_from_authcode(inc_attendee_authcode_from_string($auth));
+return (bool)$attendee;
 }),
 array("title", "Sorry, your talk must have a title.", function($title) { return $title != ""; }),
 array("subtitle", "Sorry, your talk must have a subtitle or short description.", function ($subtitle) { return $subtitle != ""; }),
@@ -56,8 +59,7 @@ $filename = inc_register_talk_maybe_filename($_FILES['userfile']['tmp_name'], $_
 }
 
 // everything seems to check out, lets insert a new talk into db
-// $attendee_id = $_POST['auth'];
-//inc_talk_insert_from_valid($attendee_id, $_POST['title'], $_POST['subtitle'], $_POST['type'], $_POST['description'], $filename);
+inc_talk_insert_from_valid($attendee->id, $_POST['title'], $_POST['subtitle'], $_POST['type'], $_POST['description'], $filename);
 
 $out['body'] = "<h3>How exciting!</h3><p>Thank you for submitting your " . $_POST['type'] . ", we are going to take it under consideration! Please understand that the review process might take some time. We will inform you of our decision, wether '" . $_POST['subtitle'] . "' is a good fit for TaCoS28 as soon as we are able.</p>";
 return $out;
