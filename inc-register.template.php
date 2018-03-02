@@ -1,6 +1,6 @@
 
 <?php	
-
+require_once('lib/recaptchalib.php');
 
 /* success of receiving corect POST values and inserting new attendee
 If this is set to true, the form is not shown. */
@@ -10,6 +10,23 @@ $success = false;
 Only displayed if it evaluates to true */
 $message =false;
 
+
+$publickey = "6LdOwEUUAAAAAKBw90_IRRuAn5GNp7ATjP9aZUdm";
+$privatekey = "6LdOwEUUAAAAAOiPKGPsHfEFXHOpq-bUm1SAan9G";
+
+
+# the response from reCAPTCHA
+$resp = null;
+# the error code from reCAPTCHA, if any
+$error = null;
+
+# was there a reCAPTCHA response?
+if ($_POST["recaptcha_response_field"]) {
+        $resp = recaptcha_check_answer ($privatekey,
+                                        $_SERVER["REMOTE_ADDR"],
+                                        $_POST["recaptcha_challenge_field"],
+                                        $_POST["recaptcha_response_field"]);
+}
 
 // if url is visited with get, then it is for email validation or user status information
 if(isset($_GET['authcode'])) {
@@ -28,6 +45,12 @@ $message = "<b>Please provide a valid email adress!</b>";
 } else if (inc_attendee_email_exists($_POST['email'])) {
 // case if email already in system
 $message = "Sorry, it seems someone with this email has already registered.";
+
+} else if(!$resp->is_valid) {
+// captcha wasnt solved
+                # set the error code so that we can display it
+                $error = $resp->error;
+$message = "It seems you are a robot! Please try to solve the captcha field again.";
 }else {
 // all good, insert into db
 if($_POST['food'] == "other") {
@@ -67,6 +90,7 @@ echo "<p><b>$message</b></p>";
 }
 ?>
 <br/>
+     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <form action="#validate_form" method="post" id="validate_form">
     <label for="attendee_name"><h3>Your name</h3></label>
     <input required type="text" name="attendee_name" id="attendee_name" />
@@ -86,6 +110,11 @@ echo "<p><b>$message</b></p>";
 </fieldset>
 <label for="note"><h3>Anything you would like to tell us</h3></label>
 <textarea name="note" id="note" rows="4"></textarea>
+<?php
+echo recaptcha_get_html($publickey, $error);
+?>
+    <br/>
+
 <input type="submit" name="submit_form" value="Submit" />
 </form>
 
