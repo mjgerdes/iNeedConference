@@ -66,4 +66,71 @@ echo  inc_admin_attendees_table();
 echo "</div>";
 }
 
+
+/********
+ Talks Stuff
+********/
+
+
+function inc_admin_talks_slug() {
+return 'ineedconference-talks';
+}
+
+function inc_admin_talks_table() {
+   ob_start();
+echo '<table>';
+echo '<tr>';
+$headings = array("Attendee", "Title", "Subtitle", "Type", "Description", "PDF", "Submit Date", "Status", "Edit");
+foreach($headings as $heading) {
+echo "<th>$heading</th>";
+}
+echo '</tr>';
+
+$talks = inc_talks();
+foreach($talks as $talk) {
+$attendee = inc_attendee_from_id($talk->attendee_id);
+echo "<tr>";
+echo "<td>$attendee->name</td>"
+. "<td>$talk->title</td>"
+. "<td>$talk->subtitle</td>";
+
+$very_short_type = strtoupper(substr($talk->type, 0, 1));
+echo "<td>$very_short_type</td>";
+
+// descriptions might be long, display no more than 30 chars
+if(count($talk->description) > 30) {
+$short_description = substr($talk->description, 0, 27) . "...";
+} else {
+$short_description = $talk->description;
+}
+
+echo "<td><font alt='$talk->description'>$short_description</font></td>";
+
+if($talk->filename) {
+$pdf = "<a href='" . inc_talk_filename_http($talk->filename) . "'>PDF</a>";
+} else {
+$pdf = "N/A";
+}
+
+echo "<td>$pdf</td>";
+echo "<td>$talk->time</td>"
+. "<td>$talk->status</td>"
+. "<td><form method='get'>"
+. '<input type="hidden" name="page" value="' . inc_admin_talks_slug() . '" />'
+. "<button type='submit' name='edit' value='" . $talk->id . "'>Edit</button></form></td>";
+echo "</tr>";
+}
+echo '</table>';
+
+return ob_get_clean();
+}
+
+function inc_admin_talks_init() {
+echo "<h1>iNeedConference Talks</h1>";
+echo "<div>";
+
+echo inc_admin_talks_table();
+echo "</div>";
+}
+
 ?>

@@ -25,6 +25,11 @@ $phplol = $phplol[$n];
 return $phplol[1];
 }
 
+/* Given a pdf filename (from the db), returns a link to that pdf */
+function inc_talk_filename_http($filename) {
+$site = get_site_url();
+return $site . "/wp-content/plugins/iNeedConference/pdf/" . $filename;
+}
 
 /* Inserts a new talk into the database.
  Validation has to be done at call-site!
@@ -51,6 +56,14 @@ return NULL;
 }
 
 return $wpdb->insert_id;
+}
+
+function inc_talks() {
+global $wpdb;
+$table_name = inc_talk_table_name();
+
+return $wpdb->get_results("
+SELECT * FROM $table_name");
 }
 
 

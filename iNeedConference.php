@@ -106,17 +106,25 @@ dbDelta( $sql_talk);
 // we only want to check for tables at plugin activation
 register_activation_hook(__FILE__, 'inc_install');
 
-include('inc-attendee.php');
-include('inc-mail.php');
-include('inc-shortcodes.php');
-include("inc-admin.php");
+require('inc-attendee.php');
+require('inc-mail.php');
+require('inc-shortcodes.php');
+require("inc-admin.php");
 
 function inc_admin_menu_setup() {
 add_menu_page('iNeedConference Attendees', // page title
-'IneedConference', // label
+'IneedConference Attendees', // label
 'manage_options', // access restriction
 inc_admin_attendees_slug(), // slug
 'inc_admin_attendees_init' /* function that is called when menu is
+opened */
+);
+
+add_menu_page('iNeedConference Talks', // page title
+'IneedConference Talks', // label
+'manage_options', // access restriction
+inc_admin_talks_slug(), // slug
+'inc_admin_talks_init' /* function that is called when menu is
 opened */
 );
 }
