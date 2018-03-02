@@ -9,8 +9,6 @@ Version: 0.1
 Author URI: http://github.com/mjgerdes
 */
 
-
-
 /*
 * @package iNeedConference
  * @version 0.1
@@ -23,6 +21,7 @@ define('INC_DIR', dirname( __FILE__ )); //an absolute path to this directory
 
 global $inc_db_version;
 $inc_db_version = '1.0';
+
 /* Functions to get table names. Note that we have a prefix like
 wp_inc_<tablename>
 to distinguish our tables from wp native tables. */
@@ -35,15 +34,18 @@ function inc_attendee_table_name() {
 return inc_general_table_prefix() . 'attendee';
 }
 
+function inc_talk_table_name() {
+return inc_general_table_prefix() . 'talk';
+}
+
 /* Creates database tables if none already exist.
 This function is run upon plugin activation.
 */
 
-function inc_install() {
-global $wpdb;
-	global $inc_db_version;
-	
+function inc_create_attendee_sql() {
 $table_name = inc_attendee_table_name();
+global $wpdb;
+
 $charset_collate = $wpdb->get_charset_collate();
 
 $default_status = inc_attendee_status_code(-1);
@@ -61,9 +63,41 @@ $sql = "CREATE TABLE $table_name (
   PRIMARY KEY  (id)
 ) $charset_collate;";
 
+return $sql;
+}
+
+function inc_create_talk_sql() {
+global $wpdb;
+$charset_collate = $wpdb->get_charset_collate();
+$table_name = inc_talk_table_name();
+$default_status = inc_talk_status_code(-1);
+$sql = "CREATE TABLE $table_name (
+  id mediumint(9) NOT NULL AUTO_INCREMENT,
+  attendee_id mediumint(9) NOT NULL,
+  time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+  title tinytext NOT NULL DEFAULT '',
+  subtitle varchar(1024) DEFAULT '' NOT NULL,
+  type tinytext NOT NULL DEFAULT '',
+  description text NOT NULL DEFAULT '',
+  status tinytext NOT NULL DEFAULT '',
+  filename tinytext NOT NULL DEFAULT '',
+  PRIMARY KEY  (id)
+) $charset_collate;";
+
+return $sql;
+}
+
+function inc_install() {
+global $wpdb;
+	global $inc_db_version;
+
+$sql_attendee = inc_create_attendee_sql();
+$sql_talk = inc_create_talk_sql();
+
 // this does the actual update
 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-dbDelta( $sql );
+dbDelta( $sql_attendee );
+dbDelta( $sql_talk);
 
 // if we need to change something in the future...
 	add_option('inc_db_version', $inc_db_version);
