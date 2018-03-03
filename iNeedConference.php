@@ -59,6 +59,7 @@ $sql = "CREATE TABLE $table_name (
   note text NOT NULL DEFAULT '',
   food tinytext NOT NULL DEFAULT '',
   university tinytext NOT NULL DEFAULT '',
+  vbb BOOL NOT NULL DEFAULT 0,
   needs_attention BOOL NOT NULL DEFAULT 0,
   PRIMARY KEY  (id)
 ) $charset_collate;";
