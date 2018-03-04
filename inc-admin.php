@@ -33,7 +33,7 @@ echo "<tr>\n"
 // flag
 . "<td>" . inc_attendee_flagstring($attendee->needs_attention) . "</td>"
 // name
-. "<td>$attendee->name</td>"
+. "<td>$attendee->name $attendee->lastname</td>"
 // status
 . "<td>" . inc_attendee_table_statusstring($attendee->status) . "</td>"
 // auth

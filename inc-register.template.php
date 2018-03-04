@@ -35,6 +35,9 @@ include("inc-register-validate.template.php");
   // we are here after user clicks submit
 
     $attendee_name = strip_tags($_POST["attendee_name"], "");
+    $attendee_lastname = strip_tags($_POST["attendee_lastname"], "");
+
+
 // we got post data, now we have to check if its ok
 if ($attendee_name == "") {
 // case if name was left blank
@@ -59,18 +62,25 @@ $foodchoice = $_POST['other_spec'];
 $foodchoice = $_POST['food'];
 }
 
-$id = inc_attendee_insert_from_valid($attendee_name, $_POST['email'], strip_tags($_POST['note'], ""), strip_tags($foodchoice, ""), strip_tags($_POST['university'], ""));
+$id = inc_attendee_insert_from_valid($attendee_name, $attendee_lastname, $_POST['email'], strip_tags($_POST['note'], ""), strip_tags($foodchoice, ""), strip_tags($_POST['university'], ""));
 
 if($id) {
 // insert success, send email
 $attendee = inc_attendee_from_id($id);
 if($attendee) {
 inc_send_attendee_validation_mail($attendee);
-}
-}
 $success = true;
+}
+}
+
+
+if(!$success) {
+// id was returned null or some other weird error with db
+$message = "Sorry, there was some trouble handling your request. Please try again or contact an administrator at help@tacos28.de."; 
+} else {
 // FIXME: replace email adress with a picture
 $message = "Thank you $attendee_name, we are looking forward to meeting you! Please check your email and follow the instructions provided in the validation mail that our robots have just sent to you. Oh, and do <b>check your spam folder</b>. Remember, if you have any further questions about your registration, feel free to reach out to us at help@tacos28.de";
+}
 } // end of data validation
 } // end of having post data
 
@@ -83,17 +93,22 @@ echo "<p>$message</p>";
 } else if(!isset($_GET['authcode'])) {
 // we were not yet successful inserting and get is not set -> we are still filling out the form
 ?>
-<p>If you would like to attend TaCoS 28, please fill out the information below.</p>
+<p>If you would like to attend TaCoS 28, please fill out the information below. Note that in order to cover expenses, we ask for a small attendance fee, to be transferred before registration closes.</p>
+<h2>Early Bird</h2>
+<p>If you register now, you can take advantage of our Early Bird discount. Currently, the attendance fee is <b>10€</b>. As TaCoS comes closer, the Early Bird phase, as well as this discount, will no longer be in effect.</p>
+<br/>
 <?php
 if($message) {
-echo "<p><b>$message</b></p>";
+echo "<div style='background-color: lightblue; margin: 5px; padding:3px;'><p><b>$message</b></p></div>";
 }
 ?>
 <br/>
      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <form action="#validate_form" method="post" id="validate_form">
-    <label for="attendee_name"><h3>Your name</h3></label>
+    <label for="attendee_name"><h3>Your first name</h3></label>
     <input required type="text" name="attendee_name" id="attendee_name" />
+	<label for="attendee_lastname"><h3>Your last name</h3></label>
+	<input required type="text" id="attendee_lastname" name="attendee_lastname" />
 <label for="email"><h3>Your E-Mail adress</h3></label>
     <input required type="email" name="email" id="email" />
 <label for="university"><h3>Your university</h3></label>

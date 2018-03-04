@@ -54,6 +54,7 @@ $sql = "CREATE TABLE $table_name (
   time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
   auth tinytext NOT NULL DEFAULT '',
   name tinytext NOT NULL,
+  lastname tinytext NOT NULL,
   email varchar(255) DEFAULT '' NOT NULL,
   status tinytext NOT NULL DEFAULT '',
   note text NOT NULL DEFAULT '',
