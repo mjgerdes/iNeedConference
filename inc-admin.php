@@ -57,10 +57,93 @@ echo "</table>";
 return ob_get_clean();
 }
 
+
+function inc_admin_attendees_edit($unsafeId) {
+$attendee = inc_attendee_from_id($unsafeId);
+
+if(!$attendee) {
+return "Whoops, something went wrong. Couldn't load the specified attendee id.";
+}
+
+return inc_admin_attendees_edit_form($attendee);
+}
+
+function inc_admin_attendees_edit_form($attendee) {
+$out = '<form method="post">';
+
+
+foreach((array) $attendee as $key => $value) {
+if($key == "id") {
+$out .= "<input type='hidden' name='$key' value='$value' />";
+$out .= "<p>$key: $value";
+} else if($key == "auth") {
+$out .= "<input type='hidden' name='$key' value='$value' />";
+$out .= "<p>$key: $value</p>";
+} else if($key == "status") {
+$out .= "current $key: [ $value ], <label>new $key: "
+. "<select name='$key'>";
+foreach(inc_internal_attendee_statustable() as $statuscode => $statusarray) {
+$status = $statusarray[0];
+$out .= "<option value='" . $status . "' ";
+if($status == $value) {
+$out .= " selected='selected' ";
+}
+$out .= " >" . $status . "</option>";
+}
+$out .= "</select";
+}else if ($key == "note") {
+$out .= "<textarea name='$key' rows='20' columns='60'>$value</textarea>";
+} else {
+$out .=
+"<label>$key: " 
+. "<input type='text' name='$key' value='$value' /></label>";
+}
+$out .= "<br/>";
+}
+$out .= '<button type="submit" name="submit_edit" value="submit_edit">Update</button>'
+. "</form>";
+
+return $out;
+}
+
+
+function inc_admin_attendees_update() {
+$attendee = inc_attendee_from_id($_POST['id']);
+
+if(!$attendee) {
+return "Whoops, couldn't get the attende to update. Some database error?";
+}
+$attendee_array = (array) $attendee;
+foreach($attendee_array as $key => $value) {
+$attendee_array[$key] = $_POST[$key];
+}
+// FIXME: function already converts to array, could save object and array conversion here
+$res = inc_attendee_update_unsafe((object) $attendee_array);
+
+if(!$res) {
+return "Something just went horribly wrong.";
+}
+
+return "<p>Update of $attendee->name OK.</p>";
+}
+
+
 // this is the actual admin panel page for attendees
 function inc_admin_attendees_init() {
 echo "<h1>iNeedConference Attendees</h1>"
 . "<div>";
+
+
+if(isset($_POST['submit_edit'])) {
+echo inc_admin_attendees_update();
+}
+
+if(isset($_GET['edit_attendee'])) {
+// show the form
+echo inc_admin_attendees_edit($_GET['edit_attendee']);
+}
+
+// always show the table
 echo  inc_admin_attendees_table();
 
 echo "</div>";

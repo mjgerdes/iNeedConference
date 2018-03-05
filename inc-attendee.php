@@ -98,6 +98,21 @@ array("%s"));
 // as always, no idea what to do if this fails
 return $res;
 }
+
+
+// for admin purposes
+function inc_attendee_update_unsafe($attendee) {
+global $wpdb;
+
+$res = $wpdb->update(inc_attendee_table_name(),
+(array)$attendee,
+array( "id" => $attendee->id));
+
+// as always, no idea what to do if this fails
+return $res;
+}
+
+
 /* Retreives an attendee from DB by id */
 function inc_attendee_from_id($id) {
 global $wpdb;
