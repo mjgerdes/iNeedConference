@@ -127,6 +127,60 @@ return "Something just went horribly wrong.";
 return "<p>Update of $attendee->name OK.</p>";
 }
 
+// return an array with 'jey' and 'value' counts
+//in an array of attendees
+function inc_internal_sum_by_key($attendees, $key, $value) {
+$nkey = 0;
+$nvalue = 0;
+foreach($attendees as $attendee) {
+foreach((array) $attendee as $k => $v) {
+if($k == $key) {
+$nkey += 1;
+if($value == $v) {
+$nvalue += 1;
+}
+}
+}
+}
+return array("key" => $nkey, "value" => $nvalue);
+}
+
+function inc_admin_attendees_summary() {
+$out = "";
+$attendees = inc_attendees();
+
+
+$actual_attendeesArr = inc_internal_sum_by_key($attendees, "status", inc_attendee_status_code(INC_ATTENDEE_STATUS_ATTENDEE));
+$dbentries = $actual_attendeesArr['key'];
+$actual_attendees = $actual_attendeesArr['value'];
+$validatedArr = inc_internal_sum_by_key($attendees, "status", inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_PAYMENT));
+$validated = $validatedArr['value'];
+$unvalidated = $dbentries - ($validated + $actual_attendees);
+$out .= "<h2>Summary</h2><p>";
+$out .= "<br/>All done, payed for attendees: $actual_attendees";
+$out .= "<br/>waiting for payment: $validated";
+$out .= "   unvalidated accounts: $unvalidated";
+$out .= "<br/>db entries total: $dbentries";
+
+$veganArr = inc_internal_sum_by_key($attendees, "food", "vegan");
+$vegArr = inc_internal_sum_by_key($attendees, "food", "vegetarian");
+$vegans = $veganArr['value'];
+$vegs = $vegArr['value'];
+$others = $veganArr['key'] - ($vegans + $vegs);
+
+$out .= "<br/>vegans: $vegans vegetarians: $vegs others: $others";
+
+$vbbArr = inc_internal_sum_by_key($attendees, "vbb", "1");
+$vbb = $vbbArr['value'];
+
+$yogaArr = inc_internal_sum_by_key($attendees, "yoga", "1");
+$yoga = $yogaArr['value'];
+
+$out .= "<br/>vbb: $vbb yoga: $yoga";
+
+$out .= "</p>";
+return $out;
+}
 
 // this is the actual admin panel page for attendees
 function inc_admin_attendees_init() {
@@ -146,6 +200,8 @@ echo inc_admin_attendees_edit($_GET['edit_attendee']);
 // always show the table
 echo  inc_admin_attendees_table();
 
+// show a summary of some facts
+echo inc_admin_attendees_summary();
 echo "</div>";
 }
 
