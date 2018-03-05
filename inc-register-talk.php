@@ -14,7 +14,7 @@ $res = inc_register_talk_showform($out);
 }
 
 if($res['msg'] != "") {
-echo "<p><b>" . $res['msg'] . "</b></p>";
+echo "<div style='background-color: lightblue; margin: 5px; padding: 4px;'><p><b>" . $res['msg'] . "</b></p></div>";
 echo "</br>";
 }
 
@@ -114,10 +114,17 @@ $out['body'] = "<h3>How exciting!</h3><p>Thank you, ". $attendee->name .", for s
 return $out;
 }
 
+function inc_register_talk_intromessage() {
+return '<p>If you are a student and would like to speak before a highly interested audience of fellow students, the TaCoS may be the right venue for you. Consider proposing a contribution to the conference by filling out the form below.</p>'
+. '<p>To encourage diversity in contributions, we would like to keep the list of acceptable topics intentionally vague, and therefore ask only that your presentation or workshop be, broadly speaking, situated within the field of computational linguistics. If you feel that you have a topic, but that it might not warrant the scope of a full presentation or workshop, please, consider giving a lightning talk, a very short, mini presentation designed expressly for this purpose.</p>'
+. '<p>Please understand that by submitting a proposal you are entering a review process, in which the adequacy of your contribution to the conference will be judged by students involved in the TaCoS 28 organization. At no point is inclusion in the conference guaranteed. But don' . "'" . 't worry, there may still be some slots available in the schedule.</p>';
+}
+
 function inc_register_talk_showform($out) {
-$out['body'] = "<form enctype='multipart/form-data' method='POST' id='talk_form'>"
+$out['body'] = inc_register_talk_intromessage()
+. "<form enctype='multipart/form-data' method='POST' id='talk_form'>"
 // auth
-. "<label for='auth'><h3>Authentication Code</h3></label>"
+. "<label for='auth'><h3>Authentication Code</h3><p>You received this after <a href='/register-to-attend/'>registering to attend</a>.</label>"
 . "<input required type='text' id='auth' name='auth' placeholder='e.g. 5-KWLXP' />"
 
 
