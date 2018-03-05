@@ -53,8 +53,11 @@ return $wpdb->num_rows > 0;
 
 /* Inserts a new attendee into the database.
  Validation has to be done at call-site!
- Returns the id of just inserted attendee or null if unsuccessful */
-function inc_attendee_insert_from_valid($validName, $validLastname, $validEmail, $validNote, $validFood, $validUniversity) {
+ Returns the id of just inserted attendee or null if unsuccessful
+
+FIXME: smelly, smelly function. Too many arguments, but it grew over time. oh well, split up into array or multiple functions or similar
+*/
+function inc_attendee_insert_from_valid($validName, $validLastname, $validEmail, $validNote, $validFood, $validUniversity, $validVbb, $validYoga) {
 global $wpdb;
 $table_name = inc_attendee_table_name();
 
@@ -70,7 +73,9 @@ $table_name = inc_attendee_table_name();
 			"needs_attention" => 0,
 			"note" => $validNote,
 			"food" => $validFood,
-			"university" => $validUniversity
+			"university" => $validUniversity,
+			"vbb" => $validVbb,
+			"yoga" => $validYoga
         )
     );
 

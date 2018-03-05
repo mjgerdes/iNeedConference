@@ -62,7 +62,8 @@ $foodchoice = $_POST['other_spec'];
 $foodchoice = $_POST['food'];
 }
 
-$id = inc_attendee_insert_from_valid($attendee_name, $attendee_lastname, $_POST['email'], strip_tags($_POST['note'], ""), strip_tags($foodchoice, ""), strip_tags($_POST['university'], ""));
+$id = inc_attendee_insert_from_valid($attendee_name, $attendee_lastname, $_POST['email'], strip_tags($_POST['note'], ""), strip_tags($foodchoice, ""), strip_tags($_POST['university'], ""),
+isset($_POST['vbb']), isset($_POST['yoga']));
 
 if($id) {
 // insert success, send email
@@ -123,6 +124,14 @@ echo "<div style='background-color: lightblue; margin: 5px; padding:3px;'><p><b>
 <input type="radio" id="rother" name="food" value="other" />
 <input type="text" name="other_spec" placeholder="Please specify" />
 </fieldset>
+<ul>
+<li>
+<label><input type="checkbox" name="vbb" value="yes" />I am interested in reduced-price tickets for public transportation in the berlin area.</label>
+</li>
+<li>
+<label><input type="checkbox" name="yoga" value="yes" />I am interested in participating in the free yoga course.</label>
+</li>
+</ul>
 <label for="note"><h3>Anything you would like to tell us</h3></label>
 <textarea name="note" id="note" rows="4"></textarea>
 <?php
