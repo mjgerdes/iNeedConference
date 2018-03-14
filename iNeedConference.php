@@ -60,7 +60,7 @@ $sql = "CREATE TABLE $table_name (
   note text NOT NULL DEFAULT '',
   food tinytext NOT NULL DEFAULT '',
   university tinytext NOT NULL DEFAULT '',
-  vbb BOOL NOT NULL DEFAULT 0,
+  vbb tinyint(2) NOT NULL DEFAULT 0,
   yoga BOOL NOT NULL DEFAULT 0,
   needs_attention BOOL NOT NULL DEFAULT 0,
   PRIMARY KEY  (id)

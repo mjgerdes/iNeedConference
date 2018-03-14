@@ -184,6 +184,19 @@ return NULL;
 return $arr[0];
 }
 
+function inc_attendee_validate_vbb($vbb, $vbb_choice) {
+if(!$vbb) {
+return 0;
+}
+
+$n = (int)$vbb_choice;
+if($n < 1 || $n > 3) {
+return 0;
+}
+
+return $n;
+}
+
 
 
 

@@ -63,7 +63,7 @@ $foodchoice = $_POST['food'];
 }
 
 $id = inc_attendee_insert_from_valid($attendee_name, $attendee_lastname, $_POST['email'], strip_tags($_POST['note'], ""), strip_tags($foodchoice, ""), strip_tags($_POST['university'], ""),
-isset($_POST['vbb']), isset($_POST['yoga']));
+inc_attendee_validate_VBB($_POST['vbb'], $_POST['vbb_choice']), isset($_POST['yoga']));
 
 if($id) {
 // insert success, send email
@@ -126,7 +126,7 @@ echo "<div style='background-color: lightblue; margin: 5px; padding:3px;'><p><b>
 </fieldset>
 <ul>
 <li>
-<label><input type="checkbox" name="vbb" value="yes" />I am interested in reduced-price tickets for public transportation in the berlin area.</label>
+<label><input type="checkbox" name="vbb" value="yes" />I want to purchase reduced price tickets for public transportation in the Berlin and Brandenburg area (ABC-Ticket/Tageskarte) for <select name="vbb_choice"><option value="1">1 day</option><option value="2">2 days</option><option value="3" selected="selected">3 days</option></select>. Price is 5,30 € per day per ticket, you save 2,40 €. This will be included in your registration fee.</label>
 </li>
 <li>
 <label><input type="checkbox" name="yoga" value="yes" />I am interested in participating in the free yoga course.</label>
