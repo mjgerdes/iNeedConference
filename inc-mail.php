@@ -34,7 +34,7 @@ $out .= $vbbdays . "x\t ABC-Ticket Tageskarte Berlin/Brandenburg\t" . inc_mail_m
 }
 
 $total = ($fee + $vbbdays * $vbbprice);
-$out .= "=========="
+$out .= "==========\n"
 . "\tTotal:\t" . inc_mail_money_format($total)
 . "\n\n";
 

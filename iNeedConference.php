@@ -16,7 +16,7 @@ Author URI: http://github.com/mjgerdes
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 // FIXME: want to turn debug off after we're done
-define('WP_DEBUG', true);
+//define('WP_DEBUG', true);
 define('INC_DIR', dirname( __FILE__ )); //an absolute path to this directory
 
 global $inc_db_version;
