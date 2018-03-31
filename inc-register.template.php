@@ -96,7 +96,7 @@ echo "<p>$message</p>";
 ?>
 <p>If you would like to attend TaCoS 28, please fill out the information below. Note that in order to cover expenses, we ask for a small attendance fee, to be transferred before registration closes.</p>
 <h2>Early Bird</h2>
-<p>If you register now, you can take advantage of our Early Bird discount. Currently, the attendance fee is <b>10€</b>. As TaCoS comes closer, the Early Bird phase, as well as this discount, will no longer be in effect.</p>
+<p>If you register now, you can take advantage of our Early Bird discount. Currently, the attendance fee is <b>15€</b>. As TaCoS comes closer, the Early Bird phase, as well as this discount, will no longer be in effect.</p>
 <br/>
 <?php
 if($message) {
