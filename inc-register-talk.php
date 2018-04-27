@@ -138,12 +138,9 @@ $out['body'] = inc_register_talk_intromessage()
 
 // radios
 . "<fieldset>"
-. "<label for='rtalk'>Presentation</label>"
-. "<input type='radio' id='rtalk' name='type' value='presentation' checked='checked' />"
-. "<label =for='rlightning'>Lightning Talk (5 to 10 minute presentation)</label>"
-. "<input type='radio' id='rlightning' name='type' value='lightning' />"
-. "<label for='rworkshop'>Workshop</label>"
-. "<input type='radio' id='rworkshop' name='type' value='workshop' />"
+. "<label for='rtalk'><input type='radio' id='rtalk' name='type' value='presentation' checked='checked' /> Presentation</label>"
+. "<label for='rlightning'><input type='radio' id='rlightning' name='type' value='lightning' />Lightning Talk (5 to 10 minute presentation)</label>"
+. "<label for='rworkshop'><input type='radio' id='rworkshop' name='type' value='workshop' /> Workshop</label>"
 . "</fieldset>"
 
 // longform description

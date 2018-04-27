@@ -10,7 +10,16 @@ $success = false;
 Only displayed if it evaluates to true */
 $message =false;
 
+// v2 captcha
+$sitekey = "6Ley5lUUAAAAAPnEgdgJLBrdltPgViedhmIWUXlZ";
+$secretkey = "6Ley5lUUAAAAABpI_KnJohUOkU8KvP2taExe2iQQ";
+$captcha = false;
+if(isset($_POST['g-recaptcha-response'])){
+          $captcha=$_POST['g-recaptcha-response'];
+        $response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$secretkey."&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
+}
 
+// v1 captcha
 $publickey = "6LdOwEUUAAAAAKBw90_IRRuAn5GNp7ATjP9aZUdm";
 $privatekey = "6LdOwEUUAAAAAOiPKGPsHfEFXHOpq-bUm1SAan9G";
 
@@ -48,12 +57,17 @@ $message = "<b>Please provide a valid email adress!</b>";
 } else if (inc_attendee_email_exists($_POST['email'])) {
 // case if email already in system
 $message = "Sorry, it seems someone with this email has already registered.";
-
+} else if (!$captcha) {
+$message = "Please fill out the captcha form.";
+} else if ($response.success != true) {
+$message = "It seems you are a robot!";
+/* old v1 stuff
 } else if(!$resp->is_valid) {
 // captcha wasnt solved
                 # set the error code so that we can display it
                 $error = $resp->error;
 $message = "It seems you are a robot! Please try to solve the captcha field again.";
+*/
 }else {
 // all good, insert into db
 if($_POST['food'] == "other") {
@@ -105,6 +119,7 @@ echo "<div style='background-color: lightblue; margin: 5px; padding:3px;'><p><b>
 ?>
 <br/>
      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 <form action="#validate_form" method="post" id="validate_form">
     <label for="attendee_name"><h3>Your first name</h3></label>
     <input required type="text" name="attendee_name" id="attendee_name" />
@@ -116,13 +131,10 @@ echo "<div style='background-color: lightblue; margin: 5px; padding:3px;'><p><b>
 <input required type="text" id="university" name="university" />
 <fieldset>
 <p>Do you have a dietary preference?</p>
-<label for="rvegan">Vegan</label> 
-<input type="radio" id="rvegan" name="food" value="vegan" checked="checked" />
-<label for="rvegetarian">Vegetarian</label>
-<input type="radio" id="rvegetarian" name="food" value="vegetarian" />
-<label for="rother">Other</label>
-<input type="radio" id="rother" name="food" value="other" />
-<input type="text" name="other_spec" placeholder="Please specify" />
+<label for="rvegan"><input type="radio" id="rvegan" name="food" value="vegan" checked="checked" />Vegan</label> 
+<label for="rvegetarian"><input type="radio" id="rvegetarian" name="food" value="vegetarian" />Vegetarian</label>
+<label for="rother"><input type="radio" id="rother" name="food" value="other" />Other <input type="text" name="other_spec" placeholder="Please specify" /></label>
+
 </fieldset>
 <ul>
 <li>
@@ -135,9 +147,12 @@ echo "<div style='background-color: lightblue; margin: 5px; padding:3px;'><p><b>
 <label for="note"><h3>Anything you would like to tell us</h3></label>
 <textarea name="note" id="note" rows="4"></textarea>
 <?php
-echo recaptcha_get_html($publickey, $error);
+// echo recaptcha_get_html($publickey, $error);
+// v1 disabled, recaptcha v2 follows
+
+echo "<div class='g-recaptcha' data-sitekey='" . $sitekey . "'></div>";
 ?>
-    <br/>
+<br/>
 
 <input type="submit" name="submit_form" value="Submit" />
 </form>
