@@ -117,7 +117,9 @@ return $out;
 function inc_register_talk_intromessage() {
 return '<p>If you are a student and would like to speak before a highly interested audience of fellow students, the TaCoS may be the right venue for you. Consider proposing a contribution to the conference by filling out the form below.</p>'
 . '<p>To encourage diversity in contributions, we would like to keep the list of acceptable topics intentionally vague, and therefore ask only that your presentation or workshop be, broadly speaking, situated within the field of computational linguistics. If you feel that you have a topic, but that it might not warrant the scope of a full presentation or workshop, please, consider giving a lightning talk, a very short, mini presentation designed expressly for this purpose.</p>'
-. '<p>Please understand that by submitting a proposal you are entering a review process, in which the adequacy of your contribution to the conference will be judged by students involved in the TaCoS 28 organization. At no point is inclusion in the conference guaranteed. But don' . "'" . 't worry, there may still be some slots available in the schedule.</p>';
+. '<p>Please understand that by submitting a proposal you are entering a review process, in which the adequacy of your contribution to the conference will be judged by students involved in the TaCoS 28 organization. At no point is inclusion in the conference guaranteed. But don' . "'" . 't worry, there may still be some slots available in the schedule.</p>'
+. "<h2>People who talk don't pay</h2>"
+ . "<p>In order to sign up for speaking at TaCoS28, you must first <a href='http://tacos28.de/register-to-attend'>register to attend</a> the conference. However, if you decide to give a workshop, presentation, or lightning talk and your proposal is accepted, we will wave the attendance fee and you may attend TaCoS28 with no payment required (excluding optional VBB tickets).";
 }
 
 function inc_register_talk_showform($out) {
