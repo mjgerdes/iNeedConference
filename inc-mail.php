@@ -27,7 +27,7 @@ function inc_mail_fee_summary($fee, $vbbdays) {
 $vbbprice = 5.30;
 
 $out = "\nSummary of Purchase\n----------\n"
-. "1x\tAttendance of TaCoS 28 (Early Bird)\t" . inc_mail_money_format($fee) . "\n";
+. "1x\tAttendance of TaCoS 28\t" . inc_mail_money_format($fee) . "\n";
 
 if($vbbdays != 0) {
 $out .= $vbbdays . "x\t ABC-Ticket Tageskarte Berlin/Brandenburg\t" . inc_mail_money_format($vbbprice) . "\n";
@@ -43,7 +43,7 @@ return array($out, $total);
 
 function inc_send_attendee_validation_mail($attendee) {
 $authcode = inc_attendee_authcode_string($attendee);
-$amount = inc_mail_fee_summary(15, $attendee->vbb);
+$amount = inc_mail_fee_summary(20, $attendee->vbb);
 
 $body = "Dear $attendee->name,\n"
 . "thank you for registering to attend to the 28th TaCoS, which will be held on June 8th through June 10th at the University of Potsdam.\n"
@@ -53,7 +53,7 @@ $body = "Dear $attendee->name,\n"
 . "\n\n"
 . "Your authentication code is:\n\n$authcode\n\n"
 . "After validating your registration, use this code, or visit the above URL again, to check on the status of your account.\n\n"
-. "In order to cover expenses, we ask attendees for a small registration fee. Since you are registering early, you are  eligible for our Early Bird discount, reducing the fee to a mere 15€.\n\n"
+. "In order to cover expenses, we ask attendees for a small registration fee.\n\n"
 . $amount[0]
 . "To conclude your registration please transfer the fee to the following account. Make sure to include your first and last name, as well as your authentication code in the transfer's stated purpose (Verwendungszweck) exactly as shown below.\n\n"
 . "Account: \n"

@@ -108,9 +108,9 @@ echo "<p>$message</p>";
 } else if(!isset($_GET['authcode'])) {
 // we were not yet successful inserting and get is not set -> we are still filling out the form
 ?>
-<p>If you would like to attend TaCoS 28, please fill out the information below. Note that in order to cover expenses, we ask for a small attendance fee, to be transferred before registration closes.</p>
-<h2>Early Bird</h2>
-<p>If you register now, you can take advantage of our Early Bird discount. Currently, the attendance fee is <b>15€</b>. As TaCoS comes closer, the Early Bird phase, as well as this discount, will no longer be in effect.</p>
+<p>If you would like to attend TaCoS 28, please fill out the information below. Note that in order to cover expenses, we ask for an attendance fee of 20€, to be transferred before registration closes.</p>
+<h2>People who talk don't pay</h2>
+<p>If you would like to avoid the attendance fee, please, consider <a href='http://tacos28.de/speak-at-tacos28'>speaking at TaCoS 28</a>. A mere lightning talk might get you into TaCoS for free!</p>
 <br/>
 <?php
 if($message) {
