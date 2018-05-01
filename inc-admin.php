@@ -170,8 +170,18 @@ $others = $veganArr['key'] - ($vegans + $vegs);
 
 $out .= "<br/>vegans: $vegans vegetarians: $vegs others: $others";
 
+
 $vbbArr = inc_internal_sum_by_key($attendees, "vbb", "1");
 $vbb = $vbbArr['value'];
+
+// FIXME: make internal higher order
+$vbbArr = inc_internal_sum_by_key($attendees, "vbb", "2");
+$vbb += $vbbArr['value'];
+
+$vbbArr = inc_internal_sum_by_key($attendees, "vbb", "3");
+$vbb += $vbbArr['value'];
+
+
 
 $yogaArr = inc_internal_sum_by_key($attendees, "yoga", "1");
 $yoga = $yogaArr['value'];
