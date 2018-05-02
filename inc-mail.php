@@ -41,7 +41,8 @@ $out .= "==========\n"
 return array($out, $total);
 }
 
-function inc_send_attendee_validation_mail($attendee) {
+
+function inc_send_attendee_validation_mail_body($attendee) {
 $authcode = inc_attendee_authcode_string($attendee);
 $amount = inc_mail_fee_summary(20, $attendee->vbb);
 
@@ -64,6 +65,12 @@ $body = "Dear $attendee->name,\n"
 . "Transfer Purpose (Verwendungszweck): 'TaCoS FSR CogSys - $attendee->name $attendee->lastname #$authcode'\n"
 . "\n"
 . "We are looking forward to meeting you!\nSincerely, the TaCoS28 Mail Robot\n";
+
+return $body;
+}
+
+function inc_send_attendee_validation_mail($attendee) {
+$body = inc_send_attendee_validation_mail_body($attendee);
 return inc_send_mail($attendee->email, "Thank you for registering to attend TaCoS28!", $body);
 }
 

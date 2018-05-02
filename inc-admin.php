@@ -101,6 +101,7 @@ $out .=
 $out .= "<br/>";
 }
 $out .= '<button type="submit" name="submit_edit" value="submit_edit">Update</button>'
+. '<button type="submit" name="resend_email" value="resend_email">Resend Email</button>'
 . "</form>";
 
 return $out;
@@ -126,6 +127,32 @@ return "Something just went horribly wrong.";
 
 return "<p>Update of $attendee->name OK.</p>";
 }
+
+
+// resend the activation email (also prints to admin panel)
+function inc_admin_attendees_resend_email() {
+$out = "";
+$attendee = inc_attendee_from_id($_POST['id']);
+
+if(!$attendee) {
+$out .= "<p>Error retrieveing attendee from DB. Something is wrong!</p>";
+return $out;
+}
+
+if(!inc_send_attendee_validation_mail($attendee)) {
+$out .= "<p>Error sending email!</p>";
+} else {
+// all good at this point
+$out .= "<p>Sent following email:</p>";
+}
+
+$out .= "<pre>";
+$out .= inc_send_attendee_validation_mail_body($attendee);
+$out .= "</pre><br/>";
+
+return $out;
+}
+
 
 // return an array with 'jey' and 'value' counts
 //in an array of attendees
@@ -200,7 +227,10 @@ echo "<h1>iNeedConference Attendees</h1>"
 
 if(isset($_POST['submit_edit'])) {
 echo inc_admin_attendees_update();
+} else if(isset($_POST['resend_email'])) {
+echo inc_admin_attendees_resend_email();
 }
+
 
 if(isset($_GET['edit_attendee'])) {
 // show the form
