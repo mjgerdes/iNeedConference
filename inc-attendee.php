@@ -5,12 +5,14 @@
 define("INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION", -1);
 define("INC_ATTENDEE_STATUS_AWAIT_PAYMENT", 0);
 define("INC_ATTENDEE_STATUS_ATTENDEE", 1);
+define("INC_ATTENDEE_STATUS_HELPER", 2);
 
 function inc_internal_attendee_statustable() {
 return array(
 INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION => array("await_email_validation", "Registration is waiting to be email validated by the user."),
  INC_ATTENDEE_STATUS_AWAIT_PAYMENT => array("await_payment", "Validated but waiting for payment."),
- INC_ATTENDEE_STATUS_ATTENDEE => array("attendee", "All good! Payment has been received and your registration is complete. We are looking forward to meeting you at TaCoS 28!"));
+ INC_ATTENDEE_STATUS_ATTENDEE => array("attendee", "All good! Payment has been received and your registration is complete. We are looking forward to meeting you at TaCoS 28!"),
+  INC_ATTENDEE_STATUS_HELPER => array("helper", "You are registered for TaCoS28 as a helper! You thereby recieve free access to TaCoS28 and our eternal gratitude! Thanks!"));
 }
 
 
