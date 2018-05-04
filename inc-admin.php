@@ -15,6 +15,7 @@ return "";
 function inc_attendee_table_statusstring($status) {
 $colors = array(inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION) => "#551111",
 inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_PAYMENT) => "#CCCC11",
+inc_attendee_status_code(INC_ATTENDEE_STATUS_HELPER) => "#1111CC",
 inc_attendee_status_code(INC_ATTENDEE_STATUS_ATTENDEE) => "#11FF11");
 
 return "<font color=" . $colors[$status] . ">$status</font>";
