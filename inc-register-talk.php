@@ -82,7 +82,7 @@ return $out;
 }
 
 // separately check the file
-if(isset($_FILES['userfile'])) {
+if(isset($_FILES['userfile']) && !($_FILES['userfile']['error'] === UPLOAD_ERR_NO_FILE)) {
     if(!($_FILES['userfile']['error'] === UPLOAD_ERR_OK)) {
        $out['msg'] = "Sorry, file upload failed with error code " . $_FILES['userfile']['error'];
 	   return inc_register_talk_showform($out);
@@ -105,6 +105,8 @@ if($filename == "") {
 $out['msg'] = "Sorry, an error occured while trying to process the file you provided. Please try submitting your request again, perhaps changing the filename.";
 return inc_register_talk_showform($out);
 }
+} else {// file stuff
+$filename= "";
 }
 
 // everything seems to check out, lets insert a new talk into db
