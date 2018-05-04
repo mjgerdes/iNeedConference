@@ -203,3 +203,10 @@ return $n;
 
 
 
+
+
+function inc_attendee_is_early_bird($attendee) {
+$regDate = strtotime($attendee->time);
+$deadline = strtotime("2018-05-01 00:00:00");
+return $regDate < $deadline;
+}
