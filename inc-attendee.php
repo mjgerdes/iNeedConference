@@ -102,6 +102,16 @@ return $res;
 }
 
 
+function inc_attendee_delete_attendee($attendee) {
+global $wpdb;
+
+$res = $wpdb->delete(inc_attendee_table_name(),
+array( "id" => $attendee->id));
+
+return $res;
+}
+
+
 // for admin purposes
 function inc_attendee_update_unsafe($attendee) {
 global $wpdb;

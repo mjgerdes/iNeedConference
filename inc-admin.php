@@ -114,6 +114,7 @@ $out .= "<br/>";
 }
 $out .= '<button type="submit" name="submit_edit" value="submit_edit">Update</button>'
 . '<button type="submit" name="resend_email" value="resend_email">Resend Email</button>'
+. '<br/><button type="submit" name="delete_attendee" value="yes">Delete</button><input type="text" name="delete_confirm" placeholder="Enter 1q84 to confirm deletion" />'
 . "</form>";
 
 return $out;
@@ -192,6 +193,31 @@ $out .= "<p>Sent emails to $n unvalidated attendees. $errors errors.</p>";
 return $out;
 }
 
+function inc_admin_attendees_delete_attendee() {
+$out = "";
+// check for confirmation
+
+if(!isset($_POST['delete_confirm']) || $_POST['delete_confirm'] != "1q84") {
+$out .= "<p>Sorry, deletion failed: Confirmation code missing or incorrect.</p>";
+return $out;
+}
+
+//should be set but lets do it for sanity
+if(!isset($_POST['delete_attendee']) || $_POST['delete_attendee'] != "yes") {
+$out .= "<p>Sorry, something went horribly wrong while deleting attendee.</p>";
+return $out;
+}
+
+// ok everything should be safe, let's drop a row
+$attendee = inc_attendee_from_id($_POST['id']);
+if(!inc_attendee_delete_attendee($attendee)) {
+$out .= "<p>Database error on deletion attempt. Maybe id ($attendee->id) not found?</p>";
+return $out;
+}
+// looks like it worked
+$out .= "<p>Dropped attendee row with id $attendee->id from table. Goodbye $attendee->name, we hardly knew ye!</p>";
+return $out;
+}
 // return an array with 'jey' and 'value' counts
 //in an array of attendees
 function inc_internal_sum_by_key($attendees, $key, $value) {
@@ -268,6 +294,8 @@ echo inc_admin_attendees_update();
 echo inc_admin_attendees_resend_email();
 } else if(isset($_POST['mass_email'])) {
 echo inc_admin_attendees_mass_email();
+} else if(isset($_POST['delete_attendee']) && $_POST['delete_attendee'] == "yes") {
+echo inc_admin_attendees_delete_attendee();
 }
 
 echo "<br/>";
