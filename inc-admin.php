@@ -58,7 +58,7 @@ usort($attendees, 'inc_admin_internal_attendee_compare');
 echo "<h2>Overview</h2>";
 echo "<table>";
 echo "<tr>\n"
-. "<th>!</th><th>Name</th><th>Status</th><th>Auth</th><th>Email</th><th>Reg Date</th><th>Note</th><th>Edit</th>"
+. "<th>!</th><th>Name</th><th>Status</th><th>Auth</th><th>Email</th><th>Reg Date</th><th>Food</th><th>VBB</th><th>Note</th><th>Edit</th>"
 . "</tr>";;
 foreach($attendees as $attendee) {
 echo "<tr>\n"
@@ -73,7 +73,11 @@ echo "<tr>\n"
 // email
 . "<td>$attendee->email</td>"
 //  date
-. "<td>$attendee->time</td>"
+. "<td>" . date("F jS", strtotime($attendee->time)) . "</td>"
+// food
+. "<td>$attendee->food</td>"
+// vbb
+. "<td>$attendee->vbb</td>"
 // note
 . "<td>$attendee->note</td>"
 // edit
