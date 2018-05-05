@@ -25,6 +25,7 @@ function inc_admin_attendees_table() {
    ob_start();
 $attendees = inc_attendees();
 
+echo "<h2>Overview</h2>";
 echo "<table>";
 echo "<tr>\n"
 . "<th>!</th><th>Name</th><th>Status</th><th>Auth</th><th>Email</th><th>Reg Date</th><th>Note</th><th>Edit</th>"
@@ -58,6 +59,16 @@ echo "</table>";
 return ob_get_clean();
 }
 
+function inc_admin_attendees_control_panel() {
+$out = "<h2>Control Panel</h2>";
+$out .= "<h3>Mass E-Mails</h3>";
+$out .= '<form name="control_panel" method="post">'; 
+$out .= "<label><input type='checkbox' name='confirm_mass_email' value='yes' /> Really send validation email to all unvalidated accounts.</label>"
+. "<button type='submit' name='mass_email' value='mass_email'>Spam those nerds!</button>";
+
+$out .= "</form>";
+return $out;
+}
 
 function inc_admin_attendees_edit($unsafeId) {
 $attendee = inc_attendee_from_id($unsafeId);
@@ -70,8 +81,8 @@ return inc_admin_attendees_edit_form($attendee);
 }
 
 function inc_admin_attendees_edit_form($attendee) {
-$out = '<form method="post">';
-
+$out = "<h2>Edit User</h2>";
+$out .= '<form method="post">';
 
 foreach((array) $attendee as $key => $value) {
 if($key == "id") {
@@ -108,7 +119,6 @@ $out .= '<button type="submit" name="submit_edit" value="submit_edit">Update</bu
 return $out;
 }
 
-
 function inc_admin_attendees_update() {
 $attendee = inc_attendee_from_id($_POST['id']);
 
@@ -128,7 +138,6 @@ return "Something just went horribly wrong.";
 
 return "<p>Update of $attendee->name OK.</p>";
 }
-
 
 // resend the activation email (also prints to admin panel)
 function inc_admin_attendees_resend_email() {
@@ -154,6 +163,34 @@ $out .= "</pre><br/>";
 return $out;
 }
 
+// send validation emails to all unvalidated accounts
+function inc_admin_attendees_mass_email() {
+$out = "";
+if($_POST['confirm_mass_email'] != 'yes') {
+$out .= "<p>Sorry, to send mass validation emails, please confirm by ticking the checkbox.</p>";
+return $out;
+}
+
+$attendees = inc_attendees();
+$n = 0;
+$errors = 0;
+
+
+foreach($attendees as $attendee) {
+//$		out .= "<p>" . var_dump($attendee->status) . "<br/>" . var_dump(inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION)) . "</p>";
+
+if($attendee->status == inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION)) {
+$n += 1;
+if(!inc_send_attendee_validation_mail($attendee)) {
+$errors += 1;
+}
+sleep(5);
+}
+}
+
+$out .= "<p>Sent emails to $n unvalidated attendees. $errors errors.</p>";
+return $out;
+}
 
 // return an array with 'jey' and 'value' counts
 //in an array of attendees
@@ -225,13 +262,15 @@ function inc_admin_attendees_init() {
 echo "<h1>iNeedConference Attendees</h1>"
 . "<div>";
 
-
 if(isset($_POST['submit_edit'])) {
 echo inc_admin_attendees_update();
 } else if(isset($_POST['resend_email'])) {
 echo inc_admin_attendees_resend_email();
+} else if(isset($_POST['mass_email'])) {
+echo inc_admin_attendees_mass_email();
 }
 
+echo "<br/>";
 
 if(isset($_GET['edit_attendee'])) {
 // show the form
@@ -240,6 +279,11 @@ echo inc_admin_attendees_edit($_GET['edit_attendee']);
 
 // always show the table
 echo  inc_admin_attendees_table();
+
+// control panel
+echo "<br/>";
+echo inc_admin_attendees_control_panel();
+echo "<br/>";
 
 // show a summary of some facts
 echo inc_admin_attendees_summary();
