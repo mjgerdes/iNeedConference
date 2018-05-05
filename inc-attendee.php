@@ -28,6 +28,16 @@ function inc_attendee_status_code_pretty($n) {
  return $phplol[1];
 }
 
+function inc_attendee_status_code_reverse($statusString) {
+$arr = inc_internal_attendee_statustable();
+foreach($arr as $n => $status) {
+if($status[0] == $statusString) {
+return $n;
+}
+}
+return NULL;
+}
+
 /* this is what we put in the auth field in the attendee table.
 It's not really necessary, which is hilarious, and we never check it, but it has to be there or the auth string we give to users won't look like an auth string!
 Also, I suppose it serves the function of preventing people from figuring out the registration status of other users. */

@@ -21,9 +21,39 @@ inc_attendee_status_code(INC_ATTENDEE_STATUS_ATTENDEE) => "#11FF11");
 return "<font color=" . $colors[$status] . ">$status</font>";
 }
 
+// compares two attendee objects
+// compare by status, if same status, compare by date
+function inc_admin_internal_attendee_compare($a, $b) {
+// function name is long so use i and j for a's and b's respective status code in numeric form
+$i = inc_attendee_status_code_reverse($a->status);
+$j = inc_attendee_status_code_reverse($b->status);
+
+// compare this part inversely to get HELPER status on top etc.
+if($i > $j) {
+return -1;
+}
+
+if($i < $j) {
+return 1;
+}
+
+//equal, check for date
+if(strtotime($a->time) < strtotime($b->time)) {
+return -1;
+}
+
+if(strtotime($a->time) > strtotime($b->time)) {
+return 1;
+}
+
+//impossible! they are truly equal
+return 0;
+}
+
 function inc_admin_attendees_table() {
    ob_start();
 $attendees = inc_attendees();
+usort($attendees, 'inc_admin_internal_attendee_compare');
 
 echo "<h2>Overview</h2>";
 echo "<table>";
