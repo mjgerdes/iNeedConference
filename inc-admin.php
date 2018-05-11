@@ -298,7 +298,7 @@ $out .= "<h2>Summary</h2><p>";
 $out .= "<br />helpers: $helpers"
 . "<br />speakers: $talkers"
 . "<br/>attendees: $actual_attendees"
-. "<br /><b>mouths-to-feed (subtotal): " . ($helpers + $talkers + $actualAttendees) 
+. "<br /><b>mouths-to-feed (subtotal): " . ($helpers + $talkers + $actual_attendees) 
 . "</b><br/>waiting for payment: $validated"
 . "   unvalidated accounts: $unvalidated";
 $out .= "<br/>db entries total: $dbentries";
