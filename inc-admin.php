@@ -16,6 +16,7 @@ function inc_attendee_table_statusstring($status) {
 $colors = array(inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION) => "#551111",
 inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_PAYMENT) => "#CCCC11",
 inc_attendee_status_code(INC_ATTENDEE_STATUS_HELPER) => "#1111CC",
+inc_attendee_status_code(INC_ATTENDEE_STATUS_TALKER) => "#CC1111",
 inc_attendee_status_code(INC_ATTENDEE_STATUS_ATTENDEE) => "#11FF11");
 
 return "<font color=" . $colors[$status] . ">$status</font>";
@@ -275,16 +276,31 @@ $out = "";
 $attendees = inc_attendees();
 
 
+
+$helpersArr = inc_internal_sum_by_key($attendees, "status", inc_attendee_status_code(INC_ATTENDEE_STATUS_HELPER));
+$helpers = $helpersArr["value"];
+
+$talkersArr = inc_internal_sum_by_key($attendees, "status", inc_attendee_status_code(INC_ATTENDEE_STATUS_TALKER));
+$talkers = $talkersArr["value"];
+
 $actual_attendeesArr = inc_internal_sum_by_key($attendees, "status", inc_attendee_status_code(INC_ATTENDEE_STATUS_ATTENDEE));
-$dbentries = $actual_attendeesArr['key'];
 $actual_attendees = $actual_attendeesArr['value'];
+
 $validatedArr = inc_internal_sum_by_key($attendees, "status", inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_PAYMENT));
 $validated = $validatedArr['value'];
-$unvalidated = $dbentries - ($validated + $actual_attendees);
+
+$unvalidatedArr = inc_internal_sum_by_key($attendees, "status", inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION));
+$unvalidated = $unvalidatedArr["value"];
+
+$dbentries = $actual_attendeesArr['key'];
+
 $out .= "<h2>Summary</h2><p>";
-$out .= "<br/>All done, payed for attendees: $actual_attendees";
-$out .= "<br/>waiting for payment: $validated";
-$out .= "   unvalidated accounts: $unvalidated";
+$out .= "<br />helpers: $helpers"
+. "<br />speakers: $talkers"
+. "<br/>attendees: $actual_attendees"
+. "<br /><b>mouths-to-feed (subtotal): " . ($helpers + $talkers + $actualAttendees) 
+. "</b><br/>waiting for payment: $validated"
+. "   unvalidated accounts: $unvalidated";
 $out .= "<br/>db entries total: $dbentries";
 
 $veganArr = inc_internal_sum_by_key($attendees, "food", "vegan");
@@ -297,22 +313,25 @@ $out .= "<br/>vegans: $vegans vegetarians: $vegs others: $others";
 
 
 $vbbArr = inc_internal_sum_by_key($attendees, "vbb", "1");
-$vbb = $vbbArr['value'];
+$vbbOne = $vbbArr['value'];
 
 // FIXME: make internal higher order
 $vbbArr = inc_internal_sum_by_key($attendees, "vbb", "2");
-$vbb += $vbbArr['value'];
+$vbbTwo = $vbbArr['value']; 
 
 $vbbArr = inc_internal_sum_by_key($attendees, "vbb", "3");
-$vbb += $vbbArr['value'];
-
-
+$vbbThree = $vbbArr['value']; 
 
 $yogaArr = inc_internal_sum_by_key($attendees, "yoga", "1");
 $yoga = $yogaArr['value'];
 
-$out .= "<br/>vbb: $vbb yoga: $yoga";
+$out .= "<br/>vbb (1 day): $vbbOne"
+. "<br />vbb (2 days): $vbbTwo"
+. "<br />vbb (3 days): $vbbThree"
+. "<br/><b>vbb tickets total: " . ($vbbOne + ($vbbTwo * 2) + ($vbbThree * 3))
+. "</b>";
 
+$out .= "<p>yoga: $yoga";
 $out .= "</p>";
 return $out;
 }
