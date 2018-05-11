@@ -96,12 +96,25 @@ return ob_get_clean();
 
 function inc_admin_attendees_control_panel() {
 $out = "<h2>Control Panel</h2>";
-$out .= "<h3>Mass E-Mails</h3>";
+$out .= "<h3>Mass Validation E-Mails</h3>";
 $out .= '<form name="control_panel" method="post">'; 
 $out .= "<label><input type='checkbox' name='confirm_mass_email' value='yes' /> Really send validation email to all unvalidated accounts.</label>"
 . "<button type='submit' name='mass_email' value='mass_email'>Spam those nerds!</button>";
-
 $out .= "</form>";
+
+
+// newsletter
+$out .= "<h3>Newsletter</h3>"
+. "<p>Send a custom mass email to all users in database.</p>"
+. "<form method='post' name='newsletter'>"
+. "<br />From: noreply@tacos28.de"
+. "<br /><label for='newsletter_subject'>Subject:</label>"
+. "<input type='text' name='newsletter_subject' id='newsletter_subject' />"
+. "<label for='newsletter_text'>Text:</label>"
+. "<textarea name='newsletter_text' id='newsletter_text' rows='6'></textarea>"
+. "<button type='submit' name='newsletter_send' value='newsletter_send'>Send Newsletter</button>"
+. "</form>";
+
 return $out;
 }
 
