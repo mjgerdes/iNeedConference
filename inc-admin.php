@@ -241,6 +241,40 @@ $out .= "<p>Sent emails to $n unvalidated attendees. $errors errors.</p>";
 return $out;
 }
 
+// send a custom email to all users in database
+function inc_admin_attendees_newsletter_send() {
+$out = "";
+
+if(!isset($_POST['newsletter_subject']) || $_POST['newsletter_subject'] == "") {
+return $out . "<p>No newsletter sent. Please give a subject to the newsletter!</p>";
+}
+
+if(!isset($_POST['newsletter_text']) || $_POST['newsletter_text'] == "") {
+return $out . "<p>No newsletter sent. Please provide some actual content!</p>";
+}
+
+if(!isset($_POST['newsletter_send']) || $_POST['newsletter_send'] != "newsletter_send") {
+return $out . "<p>Something went wrong sending newsletter. No newsletter sent!</p>";
+}
+
+// all seems good
+$users = inc_attendees();
+$subject = $_POST['newsletter_subject'];
+$body = $_POST['newsletter_text'];
+$errors = 0;
+$sent = 0;
+foreach($users as $user) {
+if(!inc_send_mail($user->email, $subject, $body)) {
+$errors += 1;
+} else {
+$sent += 1;
+}
+sleep(5);
+}
+
+return $out . "<p>Sent $sent emails, $errors errors. Sent following email:</p><br/><pre>From: noreply@tacos28.de<br/>Subject: $subject<br/>------- Text follows this line ------ <br/>$body</pre>";
+}
+
 function inc_admin_attendees_delete_attendee() {
 $out = "";
 // check for confirmation
@@ -360,6 +394,8 @@ echo inc_admin_attendees_update();
 echo inc_admin_attendees_resend_email();
 } else if(isset($_POST['mass_email'])) {
 echo inc_admin_attendees_mass_email();
+} else if(isset($_POST['newsletter_send'])) {
+echo inc_admin_attendees_newsletter_send();
 } else if(isset($_POST['delete_attendee']) && $_POST['delete_attendee'] == "yes") {
 echo inc_admin_attendees_delete_attendee();
 }
