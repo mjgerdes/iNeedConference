@@ -38,7 +38,6 @@ function inc_talk_table_name() {
 return inc_general_table_prefix() . 'talk';
 }
 
-
 function inc_couches_table_name() {
 return inc_general_table_prefix() . 'couches';
 }
@@ -106,6 +105,7 @@ $sql = "CREATE TABLE $table_name (
   id mediumint(9) NOT NULL AUTO_INCREMENT,
   time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
   email tinytext NOT NULL DEFAULT '',
+  location tinytext NOT NULL DEFAULT '',
   description text NOT NULL DEFAULT '',
   deleted BOOL NOT NULL DEFAULT 0,
   PRIMARY KEY  (id)
