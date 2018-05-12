@@ -39,7 +39,7 @@ return inc_general_table_prefix() . 'talk';
 }
 
 
-function inccouches_table_name() {
+function inc_couches_table_name() {
 return inc_general_table_prefix() . 'couches';
 }
 
