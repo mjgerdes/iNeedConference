@@ -38,6 +38,11 @@ function inc_talk_table_name() {
 return inc_general_table_prefix() . 'talk';
 }
 
+
+function inccouches_table_name() {
+return inc_general_table_prefix() . 'couches';
+}
+
 /* Creates database tables if none already exist.
 This function is run upon plugin activation.
 */
@@ -90,17 +95,38 @@ $sql = "CREATE TABLE $table_name (
 return $sql;
 }
 
+
+
+function inc_create_couches_sql() {
+global $wpdb;
+$charset_collate = $wpdb->get_charset_collate();
+$table_name = inc_couches_table_name();
+
+$sql = "CREATE TABLE $table_name (
+  id mediumint(9) NOT NULL AUTO_INCREMENT,
+  time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+  email tinytext NOT NULL DEFAULT '',
+  description text NOT NULL DEFAULT '',
+  deleted BOOL NOT NULL DEFAULT 0,
+  PRIMARY KEY  (id)
+) $charset_collate;";
+
+return $sql;
+}
+
 function inc_install() {
 global $wpdb;
 	global $inc_db_version;
 
 $sql_attendee = inc_create_attendee_sql();
 $sql_talk = inc_create_talk_sql();
+$sql_couches = inc_create_couches_sql();
 
 // this does the actual update
 require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 dbDelta( $sql_attendee );
 dbDelta( $sql_talk);
+dbDelta( $sql_couches);
 
 // if we need to change something in the future...
 	add_option('inc_db_version', $inc_db_version);
