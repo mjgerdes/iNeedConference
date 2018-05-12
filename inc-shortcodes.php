@@ -9,7 +9,6 @@ return ob_get_clean();
 
 add_shortcode('register_attendee', 'inc_get_register_attendee_shortcode');
 
-
 function inc_get_small_auth_shortcode() {
    ob_start();
 // FIXME: url should not be hardcoded
@@ -20,14 +19,17 @@ echo "<label for='small_auth'>Authentication Code</label>"
 . '<input type="submit" value="Check" style="display: block; margin: 0px;  width: 40px; height: 34px; padding: 0px; " />';
 echo "</form>";
 
-
 return ob_get_clean();
 }
 
 add_shortcode('small_auth', 'inc_get_small_auth_shortcode');
 
-
 include('inc-register-talk.php');
 add_shortcode('register_talk', 'inc_get_register_talk_shortcode');
+
+
+include('inc-couches.php');
+add_shortcode('inc_couches', 'inc_get_couches_shortcode');
+
 
 ?>
