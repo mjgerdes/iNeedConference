@@ -85,9 +85,11 @@ return array($out, true);
 }
 
 $out .= "<table>"
+. "<tr>"
 . "<th>E-Mail</th>"
 . "<th>Location</th>"
-. "<th>Description</th>";
+. "<th>Description</th>"
+. "</tr>";
 
 foreach($couches as $couch) {
 $out .= "<tr>"
