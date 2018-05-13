@@ -8,6 +8,16 @@ include('inc-couches-db.php');
 function inc_get_couches_shortcode() {
 $out = "";
 
+// v2 captcha
+$out .= '     <script src="https://www.google.com/recaptcha/api.js" async defer></script>';
+$sitekey = "6Ley5lUUAAAAAPnEgdgJLBrdltPgViedhmIWUXlZ";
+$secretkey = "6Ley5lUUAAAAABpI_KnJohUOkU8KvP2taExe2iQQ";
+$captcha = false;
+if(isset($_POST['g-recaptcha-response'])){
+          $captcha=$_POST['g-recaptcha-response'];
+        $response=file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$secretkey."&response=".$captcha."&remoteip=".$_SERVER['REMOTE_ADDR']);
+}
+
 if(isset($_POST['looking_submit'])) {
 $res = inc_couches_looking_process();
 $out .= $res[0];
@@ -19,20 +29,30 @@ return $out;
 }
 // if failure, then error message is already in $out
 } else if(isset($_POST['offering_submit'])) {
-$out .= inc_couches_offering_process()
-. "<br/>";
+if(!$captcha || $response.success != true) {
+// captcha fail
+$out .= "<p>Please retry the captcha. It seems that you are a robot!</p>";
+} else {
+$out .= inc_couches_offering_process();
+}
+$out .= "<br/>";
 } else if(isset($_POST['deleting_submit'])) {
-$out .= inc_couches_deleting_process()
-. "<br/>";
+if(!$captcha || $response.success != true) {
+// captcha fail
+$out .= "<p>Please retry the captcha. It seems that you are a robot!</p>";
+} else {
+$out .= inc_couches_deleting_process();
+}
+$out .= "<br/>";
 }
 
 // default functions of page
 $out .= "<h2>I am ...</h2>"
 . inc_couches_looking()
 . "<br/>"
-. inc_couches_offering()
+. inc_couches_offering($sitekey)
 . "<br/>"
-. inc_couches_deleting()
+. inc_couches_deleting($sitekey)
 . "<br/>";
 
 $out .= inc_couches_text_disclaimer();
@@ -106,7 +126,7 @@ $out .= "</table>";
 return array($out, true);
 }
 
-function inc_couches_offering() {
+function inc_couches_offering($sitekey) {
 $out = "";
 $out .= "<h3>... offering a place to stay at.</h3>"
 . inc_couches_texts_offering_explain()
@@ -117,6 +137,7 @@ $out .= "<h3>... offering a place to stay at.</h3>"
 . "<input required type='text' name='offering_location' id='offering_location' />"
 . "<label for='offering_description'>A description of what you can offer (i.e. sleeping possibilities, amount of space, your preferences or restrictions etc.)</label>"
 . "<textarea required name='offering_description' id='offering_description'></textarea>"
+. "<div class='g-recaptcha' data-sitekey='" . $sitekey . "'></div>"
 . "<br/><button type='submit' name='offering_submit' id='offering_submit' value='offering_submit'>Submit my offer</button>"
 . "</form>";
 
@@ -157,7 +178,7 @@ return inc_couches_texts_offering_thanks($email, $location, $description);
 }
 
 
-function inc_couches_deleting() {
+function inc_couches_deleting($sitekey) {
 $out = "";
 
 $out .= "<h3>... done offering my couch. Remove me from the system!</h3>"
@@ -165,6 +186,7 @@ $out .= "<h3>... done offering my couch. Remove me from the system!</h3>"
 . "<form method='post' id='deleting_form'>"
 . "<label for='deleting_email'>The E-Mail address you provided</label>"
 . "<input type='text' name='deleting_email' id='deleting_email' />"
+. "<div class='g-recaptcha' data-sitekey='" . $sitekey . "'></div>"
 . "<br/><button type='submit' name='deleting_submit' id='deleting_submit' value='deleting_submit'>Take my couch off the list</button>"
 . "</form>";
 
