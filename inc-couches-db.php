@@ -38,7 +38,7 @@ return NULL;
 
 
 // returns an array of couches that match the email
-function inc_couches_from_email($id) {
+function inc_couches_from_email($email) {
 global $wpdb;
 $table_name = inc_couches_table_name();
 
