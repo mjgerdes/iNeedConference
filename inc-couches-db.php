@@ -36,7 +36,7 @@ return $phplol[0];
 return NULL;
 }
 
-function inccouches_insert_from_valid($validEmail, $validLocation, $validDescription) {
+function inc_couches_insert_from_valid($validEmail, $validLocation, $validDescription) {
 global $wpdb;
 $table_name = inc_couches_table_name();
 

@@ -22,5 +22,19 @@ function inc_couches_texts_overview_none() {
 return "<br/><p>Sorry, it seems that there is no one offering right now. We are always actively pursuing more possibilities for accomodation, so please check again soon!</p>";
 }
 
+function inc_couches_texts_offering_explain() {
+  return "<p>If you live in the Potsdam/Berlin area and want to offer lodging/couch/a dry, warm patch of floor to TaCoS attendees arriving from elsewhere, please fill in the information below. You will then receive not only an amiable guest, but also all our deepest gratitute.</p>"
+  . "<p>Please understand that the information you provide will be accessible to registered attendees of TaCoS 28. This includes the e-mail address you provide. Any lodging arrangements have to be made between you and the people who might reach out to you. The TaCoS 28 organization team does not participate in the arrangements you may or may not make. You can remove yourself from this committment and retract your offer at any time and for any reason.</p>";
+}
+
+function inc_couches_texts_offering_thanks($email, $location, $description) {
+return "<h2>Your couch is being offered!</h2>"
+. "<p>Thank you very much for getting involved in TaCoS 28! Your generous hospitality is sincerely appreciated. Below is what we put on the Couch Bazaar. Expect to hear from homeless computational linguists pretty soon!</p>"
+. "<pre>"
+. "<br/>e-mail: $email"
+. "<br/>location: $location"
+. "<br/>description: $description"
+. "<br/></pre>";
+}
 
 ?>

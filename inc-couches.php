@@ -18,6 +18,8 @@ if($success) {
 return $out;
 }
 // if failure, then error message is already in $out
+} else if(isset($_POST['offering_submit'])) {
+$out .= inc_couches_offering_process();
 }
 
 // default functions of page
@@ -98,9 +100,54 @@ return array($out, true);
 
 function inc_couches_offering() {
 $out = "";
+$out .= "<h3>... offering a place to stay at.</h3>"
+. inc_couches_texts_offering_explain()
+. "<br/><form method='post' id='offering_form'>"
+. "<label for='offering_email'>Your E-Mail address where people can reach you</label>"
+. "<input required type='email' name='offering_email' id='offering_email' />"
+. "<label for='offering_location'>A rough estimate of your location (i.e. Potsdam, or Berlin Kreuzberg)</label>"
+. "<input required type='text' name='offering_location' id='offering_location' />"
+. "label for='offering_description'>A description of what you can offer (i.e. sleeping possibilities, amount of space, your preferences or restrictions etc.)</label>"
+. "<textarea required name='offering_description' id='offering_description'></textarea>"
+. "<br/><button type='submit' name='offering_submit' id='offering_submit' value='offering_submit'>Submit my offer</button>"
+. "</form>";
 
 return $out;
 }
+
+// returns a message
+function inc_couches_offering_process() {
+if(!isset($_POST['offering_email']) || !filter_var($_POST['offering_email'], FILTER_VALIDATE_EMAIL)) {
+ // case if no valid email provided
+return "<p>Thank you for offering lodging, but please, provide a valid e-mail address!</p>";
+}
+
+if(!isset($_POST['offering_location']) || $_POST['offering_location'] == "") {
+return "<p>Thank you for trying to offer lodging. However, please give a rough estimate of your location.</p>";
+}
+
+if(!isset($_POST['offering_description']) || $_POST['offering_description'] == "") {
+return "<p>Sorry, please provide a description of the sleeping arrangements you offer. And thanks for trying!</p>";
+}
+
+if(!isset($_POST['offering_submit']) || $_POST['offering_submit'] != "offering_submit") {
+return "<p>Something just went horribly wrong trying to process your offer. Oh dear!</p>";
+}
+
+// all good
+$email = $_POST['offering_email']; // valid because of filter check
+$location = strip_tags($_POST['offering_location'], "");
+$description = strip_tags($_POST['offering_description'], "");
+
+// insert a new couch
+$id = inc_couches_insert_from_valid($email, $location, $description);
+if(!$id) {
+return "<p>Sorry, it seems there was a problem inserting your sleeping arrangement into the database. Please try again later or contact the webmaster.</p>";
+}
+
+return inc_couches_texts_offering_thanks($email, $location, $description);
+}
+
 
 function inc_couches_deleting() {
 $out = "";
