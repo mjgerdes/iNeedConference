@@ -139,6 +139,7 @@ require('inc-attendee.php');
 require('inc-mail.php');
 require('inc-shortcodes.php');
 require("inc-admin.php");
+require("inc-admin-couches.php");
 
 function inc_admin_menu_setup() {
 add_menu_page('iNeedConference Attendees', // page title
@@ -154,6 +155,14 @@ add_menu_page('iNeedConference Talks', // page title
 'manage_options', // access restriction
 inc_admin_talks_slug(), // slug
 'inc_admin_talks_init' /* function that is called when menu is
+opened */
+);
+
+add_menu_page('iNeedConference Couches', // page title
+'IneedConference Couches', // label
+'manage_options', // access restriction
+inc_admin_couches_slug(), // slug
+'inc_admin_couches_init' /* function that is called when menu is
 opened */
 );
 }
