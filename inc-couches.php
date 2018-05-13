@@ -19,7 +19,11 @@ return $out;
 }
 // if failure, then error message is already in $out
 } else if(isset($_POST['offering_submit'])) {
-$out .= inc_couches_offering_process();
+$out .= inc_couches_offering_process()
+. "<br/>";
+} else if(isset($_POST['deleting_submit'])) {
+$out .= inc_couches_deleting_process()
+. "<br/>";
 }
 
 // default functions of page
@@ -86,12 +90,14 @@ $out .= "<table>"
 . "<th>Description</th>";
 
 foreach($couches as $couch) {
+$out .= "<tr>"
 // email
-$out .= "<td>$couch->email</td>"
+. "<td><a href='mailto:$couch->email'>$couch->email</a></td>"
 // location
 . "<td>$couch->location</td>"
 // description
-. "<td>$couch->description</td>";
+. "<td>$couch->description</td>"
+. "</tr>";
 }
 $out .= "</table>";
 
@@ -107,7 +113,7 @@ $out .= "<h3>... offering a place to stay at.</h3>"
 . "<input required type='email' name='offering_email' id='offering_email' />"
 . "<label for='offering_location'>A rough estimate of your location (i.e. Potsdam, or Berlin Kreuzberg)</label>"
 . "<input required type='text' name='offering_location' id='offering_location' />"
-. "label for='offering_description'>A description of what you can offer (i.e. sleeping possibilities, amount of space, your preferences or restrictions etc.)</label>"
+. "<label for='offering_description'>A description of what you can offer (i.e. sleeping possibilities, amount of space, your preferences or restrictions etc.)</label>"
 . "<textarea required name='offering_description' id='offering_description'></textarea>"
 . "<br/><button type='submit' name='offering_submit' id='offering_submit' value='offering_submit'>Submit my offer</button>"
 . "</form>";
@@ -152,6 +158,41 @@ return inc_couches_texts_offering_thanks($email, $location, $description);
 function inc_couches_deleting() {
 $out = "";
 
+$out .= "<h3>... done offering my couch. Remove me from the system!</h3>"
+. inc_couches_texts_deleting_explain()
+. "<form method='post' id='deleting_form'>"
+. "<label for='deleting_email'>The E-Mail address you provided</label>"
+. "<input type='text' name='deleting_email' id='deleting_email' />"
+. "<br/><button type='submit' name='deleting_submit' id='deleting_submit' value='deleting_submit'>Take my couch off the list</button>"
+. "</form>";
+
 return $out;
+}
+
+function inc_couches_deleting_process() {
+// returns a message
+
+if(!isset($_POST['deleting_email']) || $_POST['deleting_email'] == "") {
+return "<p>If you wish to delete yourself from the couch bazaar, please provide an e-mail address!</p>";
+}
+
+if(!filter_var($_POST['deleting_email'], FILTER_VALIDATE_EMAIL)) {
+return "<p>Please provide a valid e-mail address if you wish to remove yourself from the bazaar.</p>";
+}
+
+// all good
+$email = $_POST['deleting_email'];
+
+$couches = inc_couches_from_email($email);
+if(empty($couches)) {
+return "<p>Sorry, could not remove you from the bazaar, because we could not find that e-mail address in our system! Maybe you have already removed yourself?</p>";
+}
+
+foreach($couches as $couch) {
+// note that this doesn't actually delete, just flags the couch as deleted
+inc_couches_delete($couch);
+}
+
+return "<p>Ok, removed $email from the bazaar. Thanks for participating, and have fun with your CL student (if you got one)!</p>";
 }
 ?>

@@ -37,4 +37,7 @@ return "<h2>Your couch is being offered!</h2>"
 . "<br/></pre>";
 }
 
+function inc_couches_texts_deleting_explain() {
+return "<p>If you have previously offered your services on our couch bazaar and you have successfully made sleeping arrangements up to your capacity, or if you have changed your mind for whatever reason, simply enter the E-Mail address you provided below and you will be removed from the bazaar. If something comes up, or if you change your mind again, feel free to reapply!</p>";
+}
 ?>
