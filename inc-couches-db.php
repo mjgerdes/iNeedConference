@@ -36,6 +36,19 @@ return $phplol[0];
 return NULL;
 }
 
+
+// returns an array of couches that match the email
+function inc_couches_from_email($id) {
+global $wpdb;
+$table_name = inc_couches_table_name();
+
+return $wpdb->get_results($wpdb->prepare("
+SELECT * FROM $table_name
+ WHERE email = %s",
+$email));
+}
+
+
 function inc_couches_insert_from_valid($validEmail, $validLocation, $validDescription) {
 global $wpdb;
 $table_name = inc_couches_table_name();
