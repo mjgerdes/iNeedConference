@@ -2,7 +2,6 @@
 <?php
 
 include('inc-couches-texts.php');
-
 include('inc-couches-db.php');
 
 function inc_get_couches_shortcode() {
@@ -44,6 +43,9 @@ $out .= "<p>Please retry the captcha. It seems that you are a robot!</p>";
 $out .= inc_couches_deleting_process();
 }
 $out .= "<br/>";
+} else {
+$out .= inc_couches_texts_intro()
+. "<br/>";
 }
 
 // default functions of page
@@ -128,7 +130,7 @@ return array($out, true);
 
 function inc_couches_offering($sitekey) {
 $out = "";
-$out .= "<h3>... offering a place to stay at.</h3>"
+$out .= "<h3>... offering a place to stay at!</h3>"
 . inc_couches_texts_offering_explain()
 . "<br/><form method='post' id='offering_form'>"
 . "<label for='offering_email'>Your E-Mail address where people can reach you</label>"
