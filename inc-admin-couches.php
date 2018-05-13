@@ -9,4 +9,7 @@ function inc_admin_couches_init() {
 echo "<h1>iNeedConference Couches</h1>"
 . "<div>";
 
+echo "</div>";
+}
+
 ?>
