@@ -10,7 +10,7 @@ $message = "Sorry, there seems to be a problem with validating your registration
 } else if($attendee->status != inc_attendee_status_code(INC_ATTENDEE_STATUS_AWAIT_EMAIL_VALIDATION)) {
 // we tell users in the mail that they can go to this page to check on their status, so let's print out some information about their registration
 $message = "Hello $attendee->name, our robots say the following about your registration:<br/><pre>\n"
-. inc_attendee_status_code_pretty((int)$attendee->status)
+. inc_attendee_status_code_pretty(inc_attendee_status_code_reverse($attendee->status))
  . "\n</pre>";
 } else {
 // this case is actually validating an email link

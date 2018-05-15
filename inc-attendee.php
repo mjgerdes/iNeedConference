@@ -30,6 +30,7 @@ function inc_attendee_status_code_pretty($n) {
  return $phplol[1];
 }
 
+// to use with strings from the database
 function inc_attendee_status_code_reverse($statusString) {
 $arr = inc_internal_attendee_statustable();
 foreach($arr as $n => $status) {
