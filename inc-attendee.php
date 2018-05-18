@@ -165,9 +165,6 @@ return $wpdb->get_results("
 SELECT * FROM $table_name");
 }
 
-
-
-
 /*
  *  Authcode stuff
  *Note that the following laws hold
