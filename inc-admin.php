@@ -115,6 +115,14 @@ $out .= "<h3>Newsletter</h3>"
 . "<button type='submit' name='newsletter_send' value='newsletter_send'>Send Newsletter</button>"
 . "</form>";
 
+// CC
+$out .= "<h3>Quick Email List</h3>";
+$attendees = inc_attendees();
+$out .= "<input type='text' value='";
+foreach($attendees as $attendee) {
+$out .= $attendee->email . ",";
+}
+$out .= "' />";
 return $out;
 }
 
