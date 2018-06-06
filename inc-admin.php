@@ -340,7 +340,7 @@ $file .= "<tr>"
 // early?
 . "<td>" . inc_attendee_is_early_bird($attendee) . "</td>"
 // note
-. "<td>" . mb_strimwidth($attendee->note, 0, 30, "...") . "</td>"
+. "<td>" . mb_strimwidth($attendee->note, 0, 50, "...") . "</td>"
 . "</tr>";
 
 }
