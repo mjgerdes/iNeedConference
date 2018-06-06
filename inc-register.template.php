@@ -113,6 +113,7 @@ if($success) {
 echo "<p>$message</p>";
 } else if(!isset($_GET['authcode'])) {
 // we were not yet successful inserting and get is not set -> we are still filling out the form
+if(isset($_GET['secret'])) {
 ?>
 <p>If you would like to attend TaCoS 28, please fill out the information below. Note that in order to cover expenses, we ask students for an attendance fee of 20€, to be transferred before registration closes.</p>
 <h2>People who talk don't pay</h2>
@@ -161,6 +162,7 @@ echo "<div class='g-recaptcha' data-sitekey='" . $sitekey . "'></div>";
 </form>
 
 <?php
+} // secret
 } else {
 // get is set, just output message
 echo "<p>$message</p>";
