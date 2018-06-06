@@ -137,7 +137,13 @@ $status = "speaker";
 $out .= "$attendee->name $attendee->lastname," . ucfirst($status) . ",$attendee->university\n";
 }
 }
-$out .= "</textarea>";
+$out .= "</textarea>"
+
+// registration list
+. "<p>Click here to generate a printable list for registration.</p>"
+. "<form method='post' name='registration_list'>"
+. "<button type='submit' name='registration_list_generate' value='registration_list_generate'>Generate List</button>"
+. "</form>";
 
 return $out;
 }
@@ -299,6 +305,56 @@ sleep(5);
 return $out . "<p>Sent $sent emails, $errors errors. Sent following email:</p><br/><pre>From: noreply@tacos28.de<br/>Subject: $subject<br/>------- Text follows this line ------ <br/>$body</pre>";
 }
 
+function inc_admin_attendees_registration_list_generate() {
+$out = "";
+
+// we generate a html file and put it into a password protected area on the webserver
+$file = "<html><head><title>Registration List</title></head><body>";
+$attendees = inc_attendees();
+
+// sort by lastname
+usort($attendees, function ($a, $b) { return $a->lastname > $b->lastname; });
+
+
+// name status vbb early note
+function headerline($first) { return  "<tr><th>$first</th><th>Status</th><th>VBB</th><th>Early</th><th>Note</th></tr>"; }
+$prevchar = "";
+$char = "";
+
+$file .= "<table>";
+foreach($attendees as $attendee) {
+$char = $attendee->lastname[0];
+if($char != $prevchar) {
+$file .= headerline(ucfirst($char));
+$prevchar = $char;
+}
+
+
+$file .= "<tr>"
+// name
+. "<td>$attendee->lastname, $attendee->name</td>"
+// status
+. "<td>$attendee->status</td>"
+// vbb
+. "<td>$attendee->vbb " . inc_attendee_flagstring($attendee->needs_attention) . "</td>"
+// early?
+. "<td>" . inc_attendee_is_early_bird($attendee) . "</td>"
+// note
+. "<td>" . mb_strimwidth($attendee->note, 0, 30, "...") . "</td>"
+. "</tr>";
+
+}
+$file .= "</table></body></html>";
+$path = "/home/tacos28/www/orga/";
+$filename = "registration_list.html";
+if(!file_put_contents($path . $filename, $file)) {
+return $out . "<p>Error writing registration list.</p>";
+}
+
+$out .= "<p>Ok, a fresh registration list has been generated and placed <a href='http://tacos28.de/orga/$filename'>here</a>.";
+return $out;
+}
+
 function inc_admin_attendees_delete_attendee() {
 $out = "";
 // check for confirmation
@@ -420,6 +476,8 @@ echo inc_admin_attendees_resend_email();
 echo inc_admin_attendees_mass_email();
 } else if(isset($_POST['newsletter_send'])) {
 echo inc_admin_attendees_newsletter_send();
+} else if(isset($_POST['registration_list_generate'])) {
+echo inc_admin_attendees_registration_list_generate();
 } else if(isset($_POST['delete_attendee']) && $_POST['delete_attendee'] == "yes") {
 echo inc_admin_attendees_delete_attendee();
 }
