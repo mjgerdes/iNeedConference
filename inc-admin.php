@@ -123,6 +123,22 @@ foreach($attendees as $attendee) {
 $out .= $attendee->email . ",";
 }
 $out .= "' />";
+
+$out .= "<h3>Lists</h3>";
+$out .= "<p>Nametag CSV file (just copy and paste). Contains only people with status of attendee or better.</p>";
+$out .= "<textarea name='csv'>";
+
+foreach($attendees as $attendee) {
+if(inc_attendee_status_code_reverse($attendee->status) >= INC_ATTENDEE_STATUS_ATTENDEE) {
+// just a quick fix for the nametags
+if($attendee->status == "talker") {
+$status = "speaker";
+} else { $status = $attendee->status; }
+$out .= "$attendee->name $attendee->lastname," . ucfirst($status) . ",$attendee->university\n";
+}
+}
+$out .= "</textarea>";
+
 return $out;
 }
 
